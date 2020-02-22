@@ -9,8 +9,8 @@ import Content from './components/content/Content';
 function App() {
   return (
     <div className="app-wrapper">
-     <Header />
-     <NavBar />
+      <Header />
+      <NavBar />
       <Content />
     </div>
   );
