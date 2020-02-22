@@ -1,18 +1,15 @@
 import React from 'react';
-import styleContent from './Post.module.css';
+import styles from './Post.module.css';
 
 const Post = (props) => {
   return (
-
-    <div className={styleContent.active}>
-      <img src = {props.http} />
+    <div className={styles.active}>
+      <img src={props.http} />
       {props.message}
-         <div>
-        <button>Like</button>
+      <div>
+        <button>Like {props.countLikes}</button>
         <button>disLike</button></div>
     </div>
-
-
   );
 }
 export default Post;
