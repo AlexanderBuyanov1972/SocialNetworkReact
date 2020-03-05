@@ -1,8 +1,13 @@
 .nav {
     grid-area: n;
     background-color: aquamarine;
+    padding: 20px;
     }
 
     .item {
         color: white;
+        text-decoration: none;
+    }
+    .active {
+        color: gold;
     }
