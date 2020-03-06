@@ -1,16 +1,11 @@
 import React from 'react';
-import styles from './Content.module.css';
+import ProfileInfo from './MyPosts/ProfileInfo/ProfileInfo';
 import MyPosts from './MyPosts/MyPosts';
 
 const Content = () => {
   return (
     <div>
-      <div>
-        <img src='https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg' />
-      </div>
-      <div className={styles.active}>
-        ava + description
-        </div>
+      <ProfileInfo text='ava + description' src='https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg' />
       <MyPosts />
     </div>
   );
