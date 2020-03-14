@@ -2,11 +2,11 @@ import React from 'react';
 import './App.css';
 import Header from './components/header/Header';
 import NavBar from './components/navbar/NavBar';
-import Content from './components/content/Content';
-import Dialogs from './components/dialogs/Dialogs';
-import News from './components/news/News';
-import Musics from './components/musics/Musics';
-import Settings from './components/settings/Settings';
+import Profile from './components/content/profile/Profile';
+import Dialogs from './components/content/dialogs/Dialogs';
+import News from './components/content/news/News';
+import Musics from './components/content/musics/Musics';
+import Settings from './components/content/settings/Settings';
 import { Route, BrowserRouter } from 'react-router-dom';
 
 
@@ -18,7 +18,7 @@ function App() {
                 <Header />
                 <NavBar />
                 <div className="app-wapper-content" >
-                    <Route path='/content' component={Content} />
+                    <Route path='/profile' component={Profile} />
                     <Route path='/dialogs' component={Dialogs} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
