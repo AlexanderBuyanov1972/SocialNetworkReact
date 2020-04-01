@@ -19,9 +19,8 @@ function App(props) {
                 <Header />
                 <NavBar />
                 <div className="app-wapper-content" >
-                    <Route path='/profile' render={() => <Profile posts={props.appState.posts}/>} />
-                    <Route path='/dialogs' render={() => <Dialogs dialogs={props.appState.dialogs} 
-                    messages={props.appState.messages}/>} />
+                    <Route path='/profile' render={() => <Profile profilesPage={props.state.profilesPage} addPost = {props.addPost}/>} />
+                    <Route path='/dialogs' render={() => <Dialogs dialogsPage={props.state.dialogsPage}/>} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
                     <Route path='/settings' component={Settings} />
