@@ -12,15 +12,17 @@ import { Route, BrowserRouter } from 'react-router-dom';
 
 
 function App(props) {
-   
+
     return (
         <BrowserRouter>
             <div className="app-wrapper" >
                 <Header />
                 <NavBar />
                 <div className="app-wapper-content" >
-                    <Route path='/profile' render={() => <Profile profilesPage={props.state.profilesPage} addPost = {props.addPost}/>} />
-                    <Route path='/dialogs' render={() => <Dialogs dialogsPage={props.state.dialogsPage}/>} />
+                    <Route path='/profile' render={() => <Profile profilesPage={props.state.profilesPage}
+                        dispatch={props.dispatch} />} />
+                    <Route path='/dialogs' render={() => <Dialogs dialogsPage={props.state.dialogsPage}
+                        dispatch={props.dispatch} />} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
                     <Route path='/settings' component={Settings} />
