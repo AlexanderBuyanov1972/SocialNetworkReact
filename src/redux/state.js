@@ -1,7 +1,6 @@
-const ADD_POST = 'ADD_POST';
-const UPDATE_POST_TEXT = 'UPDATE_POST_TEXT';
-const UPDATE_MESSAGE_BODY = 'UPDATE_MESSAGE_BODY';
-const SEND_MESSAGE = 'SEND_MESSAGE';
+import profilesReducer from './profiles-reducer';
+import dialogsReducer from './dialogs-reducer';
+import sidebarReducer from './dialogs-reducer';
 
 let store = {
     _state: {
@@ -30,74 +29,25 @@ let store = {
                 { countLikes: '5', message: 'post5', id: '5', http: 'https://store.playstation.com/store/api/chihiro/00_09_000/container/IL/en/999/EP0149-CUSA09988_00-AV00000000000002/1553528383000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000' },
             ],
             newPostText: ''
-        }
+        },
+        sidebar: {}
 
     },
     getState() {
         return this._state;
     },
     dispatch(action) {
-        if (action.type === ADD_POST) {
-            this._addPost();
-        } else if (action.type === UPDATE_POST_TEXT) {
-            this._updatePostText(action.newText);
-        } else if (action.type === UPDATE_MESSAGE_BODY) {
-            this._updateMessageBody(action.newText);
-        } else if (action.type === SEND_MESSAGE) {
-            this._sendMessageBody(action.newText);
-        }
-    },
-    _addPost() {
-        let newPost = { countLikes: '0', message: store.getState().profilesPage.newPostText, id: '6',
-         http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png' };
-        if (newPost.message !== '') {
-            this._state.profilesPage.posts.push(newPost);
-            this._state.profilesPage.newPostText = '';
-            this._callBack(this._state);
-        }
-        
-    },
-    _updatePostText(newText) {
-        this._state.profilesPage.newPostText = newText;
+        this._state.profilesPage = profilesReducer(this._state.profilesPage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        // this._state.sidebar = sidebarReducer(this._state.sidebar, action);
         this._callBack(this._state);
     },
-    _updateMessageBody(newText) {
-        this._state.dialogsPage.newMessageBody = newText;
-        this._callBack(this._state);
-    },
-    _sendMessageBody() {
-        let body = { id: '4', message: this._state.dialogsPage.newMessageBody};
-        if (body.message !== '') {
-            this._state.dialogsPage.messages.push(body);
-            this._state.dialogsPage.newMessageBody = '';
-            this._callBack(this._state);
-        }
-        
-    },
+ 
     subscribe(observer) {
         this._callBack = observer;
     },
     _callBack() { }
 };
-export const createAddPostAction = () => {
-    return { type: ADD_POST };
-}
 
-export const createPostTextAction = (text) => {
-    return {
-        type: UPDATE_POST_TEXT,
-        newText: text
-    };
-}
-export const createSendMessageBodyAction = () => {
-    return { type: SEND_MESSAGE };
-}
-
-export const createMessageBodyAction = (text) => {
-    return {
-        type: UPDATE_MESSAGE_BODY,
-        newText: text
-    };
-}
 window.store = store;
 export default store;

@@ -2,24 +2,21 @@ import React from 'react';
 import styles from './Dialogs.module.css';
 import Dialog from './DialogItem/DialogItem';
 import Message from './MessageItem/MessageItem';
-import { createMessageBodyAction, createSendMessageBodyAction } from '../../../redux/state';
 
 const Dialogs = (props) => {
-    let dialogsElements = props.dialogsPage.dialogs.map(d => {
+    let dialogsElements = props.dialogs.map(d => {
         return <Dialog name={d.name} id={d.id} />
     });
-    let messagesElements = props.dialogsPage.messages.map(m => {
+    let messagesElements = props.messages.map(m => {
         return <Message message={m.message} />
     });
-    
+
     let sendMessageBody = () => {
-        let action = createSendMessageBodyAction();
-        props.dispatch(action);
+        props.sendMessage();
     };
     let changeMessadeBody = (e) => {
         let text = e.target.value;
-        let action = createMessageBodyAction(text);
-        props.dispatch(action);
+        props.changeMessage(text);
     };
     return (
         <div className={styles.dialogs}>
@@ -30,7 +27,7 @@ const Dialogs = (props) => {
                 <div>{messagesElements}</div>
                 <div>
                     <textarea placeholder='Enter your message'
-                        value={props.dialogsPage.newMessageBody} onChange={changeMessadeBody} />
+                        value={props.newMessageBody} onChange={changeMessadeBody} />
                 </div>
                 <div><button onClick={sendMessageBody}>Send</button></div>
             </div>
