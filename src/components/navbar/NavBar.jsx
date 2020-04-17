@@ -20,6 +20,11 @@ let NavBar = () => {
             <div>
                 <NavLink activeClassName={styles.active} to='/settings'>Settings</NavLink>
             </div>
+            <br />
+            <div>
+                <NavLink activeClassName={styles.active} to='/users'>Users</NavLink>
+            </div>
+
         </nav>
     );
 

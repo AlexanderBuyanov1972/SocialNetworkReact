@@ -5,6 +5,7 @@ import NavBar from './components/navbar/NavBar';
 import Profile from './components/content/profile/Profile';
 import DialogsContainer from './components/content/dialogs/DialogsContainer';
 import News from './components/content/news/News';
+import UsersContainer from './components/content/users/UsersContainer';
 import Musics from './components/content/musics/Musics';
 import Settings from './components/content/settings/Settings';
 import { Route, BrowserRouter } from 'react-router-dom';
@@ -20,6 +21,7 @@ function App(props) {
                 <div className="app-wapper-content" >
                     <Route path='/profile' render={() => <Profile />} />
                     <Route path='/dialogs' render={() => <DialogsContainer />} />
+                    <Route path='/users' render={() => <UsersContainer />} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
                     <Route path='/settings' component={Settings} />

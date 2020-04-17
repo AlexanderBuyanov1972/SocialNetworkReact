@@ -1,35 +1,43 @@
 import React from 'react';
 import { createMessageBodyAction, createSendMessageBodyAction } from '../../../redux/dialogs-reducer';
 import Dialogs from './Dialogs';
-import StoreContext from '../../../StoreContext';
+// import StoreContext from '../../../StoreContext';
+import { connect } from 'react-redux';
 
-const DialogsContainer = () => {
-    return (
-        <StoreContext.Consumer>
-            {
-                (store) => {
-                    let state = store.getState();
+// const DialogsContainer = () => {
+//     return (
+//         <StoreContext.Consumer>
+//             {
+//                 (store) => {
+//                     let state = store.getState();
 
-                    let sendMessageBody = () => {
-                        let action = createSendMessageBodyAction();
-                        store.dispatch(action);
-                    };
-                    let changeMessadeBody = (text) => {
-                        let action = createMessageBodyAction(text);
-                        store.dispatch(action);
-                    };
-                    return (
-                        <Dialogs dialogs={state.dialogsPage.dialogs}
-                            messages={state.dialogsPage.messages}
-                            newMessageBody={state.dialogsPage.newMessageBody}
-                            sendMessage={sendMessageBody}
-                            changeMessage={changeMessadeBody} />
-                    )
-                }
-            }
-        </StoreContext.Consumer>
-    );
-}
-
+//                     let sendMessageBody = () => {
+//                         store.dispatch(createSendMessageBodyAction());
+//                     };
+//                     let changeMessadeBody = (text) => {
+//                         store.dispatch(createMessageBodyAction(text));
+//                     };
+//                     return (
+//                         <Dialogs dialogsPage={state.dialogsPage}
+//                             sendMessage={sendMessageBody}
+//                             changeMessage={changeMessadeBody} />
+//                     )
+//                 }
+//             }
+//         </StoreContext.Consumer>
+//     );
+// }
+let mapStateToProps = (state) => {
+    return {
+        dialogsPage: state.dialogsPage
+    };
+};
+let mapDispatchToProps = (dispatch) => {
+    return {
+        sendMessage: () => {dispatch(createSendMessageBodyAction())},
+        changeMessage: (text) => {dispatch(createMessageBodyAction(text))}
+    };
+};
+const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
 
 export default DialogsContainer;

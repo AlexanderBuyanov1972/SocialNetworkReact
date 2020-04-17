@@ -1,33 +1,47 @@
 import React from 'react';
 import { createAddPostAction, createPostTextAction } from '../../../../redux/profiles-reducer';
 import MyPosts from './MyPosts';
-import StoreContext from '../../../../StoreContext';
+import { connect } from 'react-redux';
+// import StoreContext from '../../../../StoreContext';
 
-const MyPostsContainer = () => {
-  return (
-    <StoreContext.Consumer>
-       {
-      (store) => {
-        let state = store.getState();
+// const MyPostsContainer = () => {
+//   return (
+//     <StoreContext.Consumer>
+//       {
+//         (store) => {
+//           let state = store.getState();
 
-        let onAddPost = () => {
-          let action = createAddPostAction();
-          store.dispatch(action);
-        };
+//           let onAddPost = () => {
+//             store.dispatch(createAddPostAction());
+//           };
 
-        let onPostChange = (text) => {
-          let action = createPostTextAction(text);
-          store.dispatch(action);
-        }
-        return (
-        <MyPosts updateNewPostText={onPostChange}
-          addNewPost={onAddPost}
-          posts={state.profilesPage.posts}
-          newPostText={state.profilesPage.newPostText} /> )
-      }
-    }
+//           let onPostChange = (text) => {
+//             store.dispatch(createPostTextAction(text));
+//           }
+//           return (
+//             <MyPosts updateNewPostText={onPostChange}
+//               addNewPost={onAddPost}
+//               profilesPage={state.profilesPage} />)
+//         }
+//       }
 
-    </StoreContext.Consumer>
-  );
-}
+//     </StoreContext.Consumer>
+//   );
+// }
+
+let mapStateToProps = (state) => {
+  return {
+    profilesPage: state.profilesPage
+  }
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    addNewPost: () => { dispatch(createAddPostAction()) },
+      updateNewPostText: (text) => { dispatch(createPostTextAction(text)) }
+  }
+};
+
+let MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);
+
 export default MyPostsContainer;

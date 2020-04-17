@@ -4,11 +4,11 @@ import Dialog from './DialogItem/DialogItem';
 import Message from './MessageItem/MessageItem';
 
 const Dialogs = (props) => {
-    let dialogsElements = props.dialogs.map(d => {
-        return <Dialog name={d.name} id={d.id} />
+    let dialogsElements = props.dialogsPage.dialogs.map(d => {
+        return <Dialog name={d.name} key={d.id} id={d.id} />
     });
-    let messagesElements = props.messages.map(m => {
-        return <Message message={m.message} />
+    let messagesElements = props.dialogsPage.messages.map(m => {
+        return <Message message={m.message}  key={m.id}/>
     });
 
     let sendMessageBody = () => {
@@ -27,7 +27,7 @@ const Dialogs = (props) => {
                 <div>{messagesElements}</div>
                 <div>
                     <textarea placeholder='Enter your message'
-                        value={props.newMessageBody} onChange={changeMessadeBody} />
+                        value={props.dialogsPage.newMessageBody} onChange={changeMessadeBody} />
                 </div>
                 <div><button onClick={sendMessageBody}>Send</button></div>
             </div>

@@ -19,11 +19,17 @@ const profilesReducer = (state = initialState, action) => {
             http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
         };
         if (newPost.message !== '') {
-            state.posts.push(newPost);
-            state.newPostText = '';
+            return {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ''
+            };
         }
     } else if (action.type === UPDATE_POST_TEXT) {
-        state.newPostText = action.newText;
+        return {
+            ...state,
+            newPostText: action.newText
+        };
     }
     return state;
 }
