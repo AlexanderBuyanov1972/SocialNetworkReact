@@ -5,3 +5,8 @@ img {
 .text {
     margin: 10px;
 }
+
+.main {
+    width: 200px;
+    height: 200px;
+}

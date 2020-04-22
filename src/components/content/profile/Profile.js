@@ -7,7 +7,7 @@ const Profile = (props) => {
   
   return (
     <div className={styles.profile}>
-      <ProfileInfo text='ava + description' src='https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg' />
+      <ProfileInfo profile={props.profile} text='ava + description' src='https://p.bigstockphoto.com/GeFvQkBbSLaMdpKXF1Zv_bigstock-Aerial-View-Of-Blue-Lakes-And--227291596.jpg' />
       <MyPostsContainer />
     </div>
   );

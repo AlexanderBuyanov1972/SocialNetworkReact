@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Header from './components/header/Header';
 import NavBar from './components/navbar/NavBar';
-import Profile from './components/content/profile/Profile';
+import ProfileContainer from './components/content/profile/ProfileContainer';
 import DialogsContainer from './components/content/dialogs/DialogsContainer';
 import News from './components/content/news/News';
 import UsersContainer from './components/content/users/UsersContainer';
@@ -19,7 +19,7 @@ function App(props) {
                 <Header />
                 <NavBar />
                 <div className="app-wapper-content" >
-                    <Route path='/profile' render={() => <Profile />} />
+                    <Route path='/profile' render={() => <ProfileContainer />} />
                     <Route path='/dialogs' render={() => <DialogsContainer />} />
                     <Route path='/users' render={() => <UsersContainer />} />
                     <Route path='/news' component={News} />
