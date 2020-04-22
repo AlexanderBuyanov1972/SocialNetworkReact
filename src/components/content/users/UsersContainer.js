@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createFollowAction, createUnfollowAction, createSetUsersAction, createCurrentPageAction, createTotalUsersCountAction, createIsFetchingAction } from '../../../redux/users-reducer';
+import { setFollow, setUnfollow, setUsers, setCurrentPage, setTotalUsersCount, setIsFetching } from '../../../redux/users-reducer';
 import * as axios from 'axios';
 import Users from './Users';
 import Preloader from '../../preloader/Preloader';
@@ -42,7 +42,7 @@ class UsersAPI extends React.Component {
                 setFollow={this.props.setFollow}
                 onPageChanged={this.onPageChanged}
             />}
-            
+
         </>
     }
 };
@@ -56,15 +56,7 @@ let mapStateToProps = (state) => {
         isFetching: state.usersPage.isFetching
     };
 };
-let mapDispatchToProps = (dispatch) => {
-    return {
-        setFollow: (userId) => { dispatch(createFollowAction(userId)) },
-        setUnfollow: (userId) => { dispatch(createUnfollowAction(userId)) },
-        setUsers: (users) => { dispatch(createSetUsersAction(users)) },
-        setCurrentPage: (numberPage) => { dispatch(createCurrentPageAction(numberPage)) },
-        setTotalUsersCount: (totalCount) => { dispatch(createTotalUsersCountAction(totalCount)) },
-        setIsFetching: (flag) => { dispatch(createIsFetchingAction(flag)) }
-    };
-};
+let mapDispatchToProps = { setFollow, setUnfollow, setUsers, setCurrentPage, setTotalUsersCount, setIsFetching };
+
 const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPI);
 export default UsersContainer;
