@@ -6,27 +6,39 @@ import Users from './Users';
 import Preloader from '../../preloader/Preloader';
 
 class UsersAPI extends React.Component {
-   
+
     componentDidMount() {
         this.props.setIsFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(
-            response => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(response.data.items);
-                this.props.setTotalUsersCount(response.data.totalCount);
-            }
-        );
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`,
+            {
+                withCredentials: true,
+                headers: {
+                    "API-KEY": "173f41e8-aa06-428c-aef6-e95c8d5f1b62"
+                }
+            }).then(
+                response => {
+                    this.props.setIsFetching(false);
+                    this.props.setUsers(response.data.items);
+                    this.props.setTotalUsersCount(response.data.totalCount);
+                }
+            );
     }
 
     onPageChanged = (numberPage) => {
         this.props.setCurrentPage(numberPage);
         this.props.setIsFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${numberPage}&count=${this.props.pageSize}`).then(
-            response => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(response.data.items);
-            }
-        );
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${numberPage}&count=${this.props.pageSize}`,
+            {
+                withCredentials: true,
+                headers: {
+                    "API-KEY": "173f41e8-aa06-428c-aef6-e95c8d5f1b62"
+                }
+            }).then(
+                response => {
+                    this.props.setIsFetching(false);
+                    this.props.setUsers(response.data.items);
+                }
+            );
     };
 
     render() {

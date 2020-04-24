@@ -7,15 +7,13 @@ import { connect } from 'react-redux';
 class HeaderContainer extends React.Component {
 
     componentDidMount() {
-        axios.get('https://social-network.samuraijs.com/api/1.0/auth/me', { withCredentials: true }).then(
+        axios.get('https://social-network.samuraijs.com/api/1.0/auth/me', { withCredentials: true,
+        headers: {
+            "API-KEY": "173f41e8-aa06-428c-aef6-e95c8d5f1b62" 
+          }  }).then(
             response => {
                 if (response.data.resultCode === 0) {
-                    let data = {
-                        userId: response.data.data.id,
-                        login: response.data.data.login,
-                        email: response.data.data.email
-                    };
-                    this.props.setAuthUserData(data);
+                    this.props.setAuthUserData(response.data.data);
                 }
             }
         );
@@ -30,7 +28,7 @@ class HeaderContainer extends React.Component {
 
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
-    login: state.auth.login
+    login: state.auth.data.login
 });
 let mapDispatchToProps = {
     setAuthUserData
