@@ -1,4 +1,5 @@
 import * as axios from 'axios';
+import { setProfile } from '../redux/profiles-reducer';
 
 const instance = axios.create(
     {
@@ -9,11 +10,24 @@ const instance = axios.create(
         }
     }
 );
-
+export const getUserById = (userId) => {
+    return instance.get(`profile/${userId}`).then(
+        response => {
+            return response.data
+        });
+}
+export const getAuthUser = () => {
+    return instance.get('auth/me').then(
+        response => {
+            return response.data
+        }
+    );
+};
 export const getUsers = (numberPage = 1, pageSize = 10) => {
-    return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(response => {
-        return response.data
-    });
+    return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(
+        response => {
+            return response.data
+        });
 };
 
 export const frendsAPI = {
@@ -22,7 +36,7 @@ export const frendsAPI = {
             return response.data.resultCode
         });
     },
-    
+
     subscribeUser(id) {
         return instance.post(`follow/${id}`).then(response => {
             return response.data.resultCode

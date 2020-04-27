@@ -1,48 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setFollow, setUnfollow, setUsers, setCurrentPage, setTotalUsersCount, setIsFetching, setIsFollowingInProgress } from '../../../redux/users-reducer';
+import { followThunk, unfollowThunk, getUsersThunk, getUsersThunk2 } from '../../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../../preloader/Preloader';
-import { getUsers } from '../../../api/api';
 
 class UsersAPI extends React.Component {
 
     componentDidMount() {
-        this.props.setIsFetching(true);
-        getUsers(this.props.numberPage, this.props.pageSize).then(
-            data => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(data.items);
-                this.props.setTotalUsersCount(data.totalCount);
-            }
-        );
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);
     }
 
     onPageChanged = (numberPage) => {
-        this.props.setCurrentPage(numberPage);
-        this.props.setIsFetching(true);
-        getUsers(numberPage, this.props.pageSize).then(
-            data => {
-                this.props.setIsFetching(false);
-                this.props.setUsers(data.items);
-            }
-        );
+        this.props.getUsers2(numberPage, this.props.pageSize);
     };
 
     render() {
         return <>
-            {this.props.isFetching ? <Preloader /> : <Users
+            {this.props.isFetching ? 
+            <Preloader />
+            : <Users
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 currentPage={this.props.currentPage}
                 users={this.props.users}
-                setUnfollow={this.props.setUnfollow}
-                setFollow={this.props.setFollow}
-                onPageChanged={this.onPageChanged}
                 isFollowingInProgress={this.props.isFollowingInProgress}
-                setIsFollowingInProgress={this.props.setIsFollowingInProgress}
-            />}
 
+                onPageChanged={this.onPageChanged}
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
+            />}
         </>
     }
 };
@@ -53,13 +39,15 @@ let mapStateToProps = (state) => {
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
         isFollowingInProgress: state.usersPage.isFollowingInProgress
     };
 };
+
 let mapDispatchToProps = {
-    setFollow, setUnfollow, setUsers, setCurrentPage,
-    setTotalUsersCount, setIsFetching, setIsFollowingInProgress
+    unfollow: unfollowThunk,
+    follow: followThunk,
+    getUsers: getUsersThunk,
+    getUsers2: getUsersThunk2
 };
 
 const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(UsersAPI);

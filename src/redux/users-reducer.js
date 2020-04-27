@@ -1,3 +1,6 @@
+import { getUsers } from '../api/api';
+import { frendsAPI } from '../api/api';
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -15,7 +18,7 @@ let initialState = {
     currentPage: 1,
     isFetching: false,
     isFollowingInProgress: []
- 
+
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -59,9 +62,9 @@ const usersReducer = (state = initialState, action) => {
         case TOGGLE_IS_FOLLOW_INPROGRESS:
             return {
                 ...state,
-                 isFollowingInProgress: action.isFetching ? 
-                [...state.isFollowingInProgress, action.userId] :
-                [state.isFollowingInProgress.filter(id => id !== action.userId)]
+                isFollowingInProgress: action.isFetching ?
+                    [...state.isFollowingInProgress, action.userId] :
+                    [state.isFollowingInProgress.filter(id => id !== action.userId)]
             }
         default:
             return state;
@@ -79,7 +82,7 @@ export const setUsers = (users) => {
     return { type: SET_USERS, users };
 }
 
-export const setCurrentPage= (number) => {
+export const setCurrentPage = (number) => {
     return { type: SET_CURRENT_PAGE, currentPage: number };
 }
 
@@ -92,7 +95,59 @@ export const setIsFetching = (isFetching) => {
 }
 
 export const setIsFollowingInProgress = (isFetching, userId) => {
-    return { type: TOGGLE_IS_FOLLOW_INPROGRESS, isFetching, userId};
+    return { type: TOGGLE_IS_FOLLOW_INPROGRESS, isFetching, userId };
 }
+
+export const getUsersThunk = (numberPage, pageSize) => {
+    return (dispatch) => {
+        dispatch(setIsFetching(true));
+        getUsers(numberPage, pageSize).then(
+            data => {
+                dispatch(setIsFetching(false));
+                dispatch(setUsers(data.items));
+                dispatch(setTotalUsersCount(data.totalCount));
+            }
+        );
+    };
+};
+
+export const getUsersThunk2 = (numberPage, pageSize) => {
+    return (dispatch) => {
+        dispatch(setCurrentPage(numberPage));
+        dispatch(setIsFetching(true));
+        getUsers(numberPage, pageSize).then(
+            data => {
+                dispatch(setIsFetching(false));
+                dispatch(setUsers(data.items));
+            }
+        );
+    };
+};
+
+export const unfollowThunk = (userId) => {
+    return (dispatch) => {
+        dispatch(setIsFollowingInProgress(true, userId));
+        frendsAPI.unsubscribeUser(userId).then(resultCode => {
+            if (resultCode == 0) {
+                dispatch(setUnfollow(userId));
+            }
+            dispatch(setIsFollowingInProgress(false, userId));
+        });
+    }
+};
+
+export const followThunk = (userId) => {
+    return (dispatch) => {
+        dispatch(setIsFollowingInProgress(true, userId));
+        frendsAPI.subscribeUser(userId).then(resultCode => {
+            if (resultCode == 0) {
+                dispatch(setFollow(userId));
+            }
+            dispatch(setIsFollowingInProgress(false, userId));
+        });
+    }
+};
+
+
 
 export default usersReducer;

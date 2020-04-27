@@ -1,3 +1,4 @@
+import {getUserById} from '../api/api';
 const ADD_POST = 'ADD_POST';
 const UPDATE_POST_TEXT = 'UPDATE_POST_TEXT';
 const SET_PROFILE = 'SET_PROFILE';
@@ -57,4 +58,14 @@ export const setProfile = (profile) => {
         profile
     };
 }
+
+export const getUserThunk = (userId) => {
+    return (dispatch) => {
+        getUserById(userId).then(
+            data => {
+                dispatch(setProfile(data));
+            }
+        );
+    }
+};
 export default profilesReducer;

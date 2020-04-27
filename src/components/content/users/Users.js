@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './Users.module.css';
 import man from '../../../../src/assets/images/man.jpg';
 import { NavLink } from 'react-router-dom';
-import { frendsAPI } from '../../../api/api'
 
 let Users = (props) => {
 
@@ -11,7 +10,6 @@ let Users = (props) => {
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
-
     return (
         <div>
             <div>
@@ -29,24 +27,10 @@ let Users = (props) => {
                         <div>
                             {u.followed ?
                                 <button disabled={props.isFollowingInProgress.some(id => id === u.id)} onClick={() => {
-                                    
-                                    props.setIsFollowingInProgress(true, u.id);
-                                    frendsAPI.unsubscribeUser(u.id).then(resultCode => {
-                                        if (resultCode == 0) {
-                                            props.setUnfollow(u.id);
-                                        }
-                                        props.setIsFollowingInProgress(false, u.id);
-                                    });
+                                    props.unfollow(u.id);
                                 }}>Unfollow</button> :
                                 <button disabled={props.isFollowingInProgress.some(id => id === u.id)} onClick={() => {
-                                    
-                                    props.setIsFollowingInProgress(true, u.id);
-                                    frendsAPI.subscribeUser(u.id).then(resultCode => {
-                                        if (resultCode == 0) {
-                                            props.setFollow(u.id);
-                                        }
-                                        props.setIsFollowingInProgress(false, u.id);
-                                    });
+                                    props.follow(u.id);
                                 }}>Follow</button>}
                         </div>
                         <div>
