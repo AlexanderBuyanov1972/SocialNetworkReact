@@ -1,7 +1,8 @@
-import {getUserById} from '../api/api';
+import { getUserById, statusUser } from '../api/api';
 const ADD_POST = 'ADD_POST';
 const UPDATE_POST_TEXT = 'UPDATE_POST_TEXT';
 const SET_PROFILE = 'SET_PROFILE';
+const SET_STATUS_USER = 'SET_STATUS_USER';
 
 let initialState = {
     posts: [
@@ -12,7 +13,8 @@ let initialState = {
         { countLikes: '5', message: 'post5', id: '5', http: 'https://store.playstation.com/store/api/chihiro/00_09_000/container/IL/en/999/EP0149-CUSA09988_00-AV00000000000002/1553528383000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000' },
     ],
     newPostText: '',
-    profile: {}
+    profile: {},
+    status: ''
 };
 
 const profilesReducer = (state = initialState, action) => {
@@ -40,6 +42,12 @@ const profilesReducer = (state = initialState, action) => {
             profile: action.profile
         };
     }
+    else if (action.type === SET_STATUS_USER) {
+        return {
+            ...state,
+            status: action.status
+        };
+    }
     return state;
 }
 export const createAddPostAction = () => {
@@ -52,12 +60,20 @@ export const createPostTextAction = (text) => {
         newText: text
     };
 }
-export const setProfile = (profile) => {
+const setProfile = (profile) => {
     return {
         type: SET_PROFILE,
         profile
     };
 }
+
+const setStatusUser = (status) => {
+    return {
+        type: SET_STATUS_USER,
+        status
+    };
+}
+
 
 export const getUserThunk = (userId) => {
     return (dispatch) => {
@@ -68,4 +84,26 @@ export const getUserThunk = (userId) => {
         );
     }
 };
+
+export const getStatusUserThunk = (userId) => {
+    return (dispatch) => {
+        statusUser.getStatusUser(userId).then(
+            data => {
+                dispatch(setStatusUser(data));
+            }
+        );
+    }
+}
+
+export const updateStatusUserThunk = (status) => {
+    return (dispatch) => {
+        statusUser.updateStatusUser(status).then(
+            data => {
+                if (data.resultCode === 0) {
+                    dispatch(setStatusUser(data.data));
+                }
+            }
+        );
+    }
+}
 export default profilesReducer;

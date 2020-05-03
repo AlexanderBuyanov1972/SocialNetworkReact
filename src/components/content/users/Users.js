@@ -40,6 +40,9 @@ let Users = (props) => {
                             {u.status}
                         </div>
                         <div>
+                            {u.id}
+                            </div>
+                        <div>
                             {'u.location.city'}
                         </div>
                         <div>

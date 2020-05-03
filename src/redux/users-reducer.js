@@ -128,7 +128,7 @@ export const unfollowThunk = (userId) => {
     return (dispatch) => {
         dispatch(setIsFollowingInProgress(true, userId));
         frendsAPI.unsubscribeUser(userId).then(resultCode => {
-            if (resultCode == 0) {
+            if (resultCode === 0) {
                 dispatch(setUnfollow(userId));
             }
             dispatch(setIsFollowingInProgress(false, userId));
@@ -140,7 +140,7 @@ export const followThunk = (userId) => {
     return (dispatch) => {
         dispatch(setIsFollowingInProgress(true, userId));
         frendsAPI.subscribeUser(userId).then(resultCode => {
-            if (resultCode == 0) {
+            if (resultCode === 0) {
                 dispatch(setFollow(userId));
             }
             dispatch(setIsFollowingInProgress(false, userId));

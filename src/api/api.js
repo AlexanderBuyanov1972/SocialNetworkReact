@@ -10,6 +10,23 @@ const instance = axios.create(
         }
     }
 );
+export const statusUser = {
+   getStatusUser(userId) {
+        return instance.get(`profile/status/${userId}`).then(
+            response => {
+                return response.data
+            });
+    },
+    updateStatusUser(status) {
+        return instance.put(`profile/status/`, {status}).then(
+            response => {
+                return response.data
+            });
+    }
+};
+
+
+
 export const getUserById = (userId) => {
     return instance.get(`profile/${userId}`).then(
         response => {

@@ -9,6 +9,7 @@ import Musics from './components/content/musics/Musics';
 import Settings from './components/content/settings/Settings';
 import { Route, BrowserRouter } from 'react-router-dom';
 import HeaderContainer from './components/header/HeaderContainer';
+import Login from './components/content/login/Login';
 
 
 
@@ -22,6 +23,7 @@ function App(props) {
                     <Route path='/profile/:userId?' render={() => <ProfileContainer />} />
                     <Route path='/dialogs' render={() => <DialogsContainer />} />
                     <Route path='/users' render={() => <UsersContainer />} />
+                    <Route path='/login' render={() => <Login />} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
                     <Route path='/settings' component={Settings} />
