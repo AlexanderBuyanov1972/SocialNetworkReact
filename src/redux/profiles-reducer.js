@@ -1,6 +1,5 @@
 import { getUserById, statusUser } from '../api/api';
 const ADD_POST = 'ADD_POST';
-const UPDATE_POST_TEXT = 'UPDATE_POST_TEXT';
 const SET_PROFILE = 'SET_PROFILE';
 const SET_STATUS_USER = 'SET_STATUS_USER';
 
@@ -12,7 +11,6 @@ let initialState = {
         { countLikes: '4', message: 'post4', id: '4', http: 'https://dt2sdf0db8zob.cloudfront.net/wp-content/uploads/2019/12/9-Best-Online-Avatars-and-How-to-Make-Your-Own-for-Free-image1-5.png' },
         { countLikes: '5', message: 'post5', id: '5', http: 'https://store.playstation.com/store/api/chihiro/00_09_000/container/IL/en/999/EP0149-CUSA09988_00-AV00000000000002/1553528383000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000' },
     ],
-    newPostText: '',
     profile: {},
     status: ''
 };
@@ -20,23 +18,16 @@ let initialState = {
 const profilesReducer = (state = initialState, action) => {
     if (action.type === ADD_POST) {
         let newPost = {
-            countLikes: '0', message: state.newPostText, id: '6',
+            countLikes: '0', message: action.newPostText, id: '6',
             http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
         };
         if (newPost.message !== '') {
             return {
                 ...state,
-                posts: [...state.posts, newPost],
-                newPostText: ''
+                posts: [...state.posts, newPost]
             };
         }
-    } else if (action.type === UPDATE_POST_TEXT) {
-        return {
-            ...state,
-            newPostText: action.newText
-        };
-    }
-    else if (action.type === SET_PROFILE) {
+    }else if (action.type === SET_PROFILE) {
         return {
             ...state,
             profile: action.profile
@@ -50,16 +41,10 @@ const profilesReducer = (state = initialState, action) => {
     }
     return state;
 }
-export const createAddPostAction = () => {
-    return { type: ADD_POST };
+export const createAddPostAction = (newPostText) => {
+    return { type: ADD_POST, newPostText };
 }
 
-export const createPostTextAction = (text) => {
-    return {
-        type: UPDATE_POST_TEXT,
-        newText: text
-    };
-}
 const setProfile = (profile) => {
     return {
         type: SET_PROFILE,

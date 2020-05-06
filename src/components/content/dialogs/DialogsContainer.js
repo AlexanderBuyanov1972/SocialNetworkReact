@@ -13,8 +13,7 @@ let mapStateToProps = (state) => {
 };
 let mapDispatchToProps = (dispatch) => {
     return {
-        sendMessage: () => { dispatch(createSendMessageBodyAction()) },
-        changeMessage: (text) => { dispatch(createMessageBodyAction(text)) }
+        sendMessage: (newMessageBody) => { dispatch(createSendMessageBodyAction(newMessageBody)) }
     };
 };
 export default compose(
