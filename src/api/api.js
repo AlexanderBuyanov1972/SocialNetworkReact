@@ -11,40 +11,42 @@ const instance = axios.create(
     }
 );
 export const statusUser = {
-   getStatusUser(userId) {
+    getStatusUser(userId) {
         return instance.get(`profile/status/${userId}`).then(
             response => {
                 return response.data
             });
     },
     updateStatusUser(status) {
-        return instance.put(`profile/status/`, {status}).then(
+        return instance.put(`profile/status/`, { status }).then(
             response => {
                 return response.data
             });
     }
 };
 
-
-
-export const getUserById = (userId) => {
-    return instance.get(`profile/${userId}`).then(
-        response => {
-            return response.data
-        });
-}
-export const getAuthUser = () => {
-    return instance.get('auth/me').then(
-        response => {
-            return response.data
-        }
-    );
-};
-export const getUsers = (numberPage = 1, pageSize = 10) => {
-    return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(
-        response => {
-            return response.data
-        });
+export const authApi = {
+    me() {
+        return instance.get('auth/me').then(
+            response => {
+                return response.data;
+            }
+        );
+    },
+    login(data) {
+        return instance.post('auth/login', data).then(
+            response => {
+                return response.data;
+            }
+        );
+    },
+    logout() {
+        return instance.delete('auth/login').then(
+            response => {
+                return response.data;
+            }
+        );
+    }
 };
 
 export const frendsAPI = {
@@ -59,5 +61,23 @@ export const frendsAPI = {
             return response.data.resultCode
         });
     }
+};
+
+
+
+
+export const getUserById = (userId) => {
+    return instance.get(`profile/${userId}`).then(
+        response => {
+            return response.data
+        });
+}
+
+
+export const getUsers = (numberPage = 1, pageSize = 10) => {
+    return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(
+        response => {
+            return response.data
+        });
 };
 
