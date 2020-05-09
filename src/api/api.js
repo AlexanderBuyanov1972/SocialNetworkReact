@@ -74,7 +74,7 @@ export const getUserById = (userId) => {
 }
 
 
-export const getUsers = (numberPage = 1, pageSize = 10) => {
+export const getUsers= (numberPage = 1, pageSize = 10) => {
     return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(
         response => {
             return response.data

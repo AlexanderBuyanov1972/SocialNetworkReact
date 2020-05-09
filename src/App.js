@@ -7,15 +7,23 @@ import News from './components/content/news/News';
 import UsersContainer from './components/content/users/UsersContainer';
 import Musics from './components/content/musics/Musics';
 import Settings from './components/content/settings/Settings';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, BrowserRouter, withRouter } from 'react-router-dom';
 import HeaderContainer from './components/header/HeaderContainer';
 import Login from './components/content/login/Login';
+import { initializeApp } from './redux/app-reducer';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import Preloader from './components/preloader/Preloader';
 
-
-
-function App(props) {
-    return (
-        <BrowserRouter>
+class App extends React.Component {
+    componentDidMount() {
+        this.props.initializeApp();
+    }
+    render() {
+        if (!this.props.initialized) {
+            return <Preloader />
+        }
+        return (
             <div className="app-wrapper" >
                 <HeaderContainer />
                 <NavBar />
@@ -29,9 +37,14 @@ function App(props) {
                     <Route path='/settings' component={Settings} />
                 </div>
             </div>
-        </BrowserRouter>
+        );
+    }
+};
 
-    );
-}
+let mapStateToProps = (state) => ({
+    initialized: state.app.initialized
+});
 
-export default App;
+let mapDispatchToProps = { initializeApp };
+
+export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(App);

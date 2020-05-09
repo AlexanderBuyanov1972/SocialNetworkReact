@@ -28,17 +28,16 @@ export const setAuthUserData = (data, isAuth) => {
     return { type: SET_USER_DATA, payload: { data, isAuth } };
 }
 
-export const authUserThunk = () => {
-    return (dispatch) => {
-        authApi.me().then(
-            d => {
-                if (d.resultCode === 0) {
-                    dispatch(setAuthUserData(d.data, true));
-                }
+export const authUserThunk = () => (dispatch) => {
+    return authApi.me().then(
+        d => {
+            if (d.resultCode === 0) {
+                dispatch(setAuthUserData(d.data, true));
             }
-        );
-    };
+        }
+    );
 };
+
 
 // const data = {email, password, rememderMe = false};
 
