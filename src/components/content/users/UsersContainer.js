@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { followThunk, unfollowThunk, getUsersThunk, getUsersThunk2 } from '../../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../../preloader/Preloader';
-import { getAllUsers, getPageSize, getTotalUsersCount, getСurrentPage, getIsFollowingInProgress } from '../../../redux/users-selectors';
+import { usersBlock, getUsersSelectors } from '../../../redux/users-selectors';
 
 class UsersAPI extends React.Component {
 
@@ -40,12 +40,14 @@ let mapDispatchToProps = {
     getUsers: getUsersThunk,
     getUsers2: getUsersThunk2
 };
-let mapStateToProps = (state) => ({
-    users: getAllUsers(state),
-    pageSize: getPageSize(state),
-    totalUsersCount: getTotalUsersCount(state),
-    currentPage: getСurrentPage(state),
-    isFollowingInProgress: getIsFollowingInProgress(state)
-})
+let mapStateToProps = (state) => {
+    return {
+        users: getUsersSelectors(state),
+        pageSize: usersBlock.getPageSize(state),
+        totalUsersCount: usersBlock.getTotalUsersCount(state),
+        currentPage: usersBlock.getСurrentPage(state),
+        isFollowingInProgress: usersBlock.getIsFollowingInProgress(state)
+    }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersAPI);

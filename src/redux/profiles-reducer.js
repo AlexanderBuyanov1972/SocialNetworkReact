@@ -85,7 +85,7 @@ export const updateStatusUserThunk = (status) => {
         statusUser.updateStatusUser(status).then(
             data => {
                 if (data.resultCode === 0) {
-                    dispatch(setStatusUser(data.data));
+                    dispatch(setStatusUser(status));
                 }
             }
         );

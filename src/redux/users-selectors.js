@@ -1,19 +1,24 @@
-export const getAllUsers = (state) => {
-    return state.usersPage.users;
-}
+import { createSelector } from "reselect";
 
-export const getPageSize = (state) => {
-    return state.usersPage.pageSize;
-}
+export const usersBlock = {
+    getAllUsers(state) {
+        return state.usersPage.users;
+    },
+    getPageSize(state) {
+        return state.usersPage.pageSize;
+    },
+    getTotalUsersCount(state) {
+        return state.usersPage.totalUsersCount;
+    },
+    getСurrentPage(state) {
+        return state.usersPage.currentPage;
+    },
+    getIsFollowingInProgress(state) {
+        return state.usersPage.isFollowingInProgress;
+    }
+};
 
-export const getTotalUsersCount = (state) => {
-    return state.usersPage.totalUsersCount;
-}
+export const getUsersSelectors = createSelector(usersBlock.getAllUsers, (users) => {
+    return users.filter(u => true)
+});
 
-export const getСurrentPage = (state) => {
-    return state.usersPage.currentPage;
-}
-
-export const getIsFollowingInProgress = (state) => {
-    return state.usersPage.isFollowingInProgress;
-}

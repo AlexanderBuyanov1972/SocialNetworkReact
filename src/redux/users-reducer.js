@@ -6,8 +6,9 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
-const TOGGLE_ISFETCHING = 'TOGGLE_ISFETCHING';
+const TOGGLE_IS_FETCHING = 'TOGGLE_ISFETCHING';
 const TOGGLE_IS_FOLLOW_INPROGRESS = 'TOGGLE_IS_FOLLOW_INPROGRESS';
+const FAKE = 'FAKE';
 
 
 
@@ -17,12 +18,15 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    isFollowingInProgress: []
+    isFollowingInProgress: [],
+    fake: 10
 
 };
 
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
+        case FAKE:
+            return { ...state, fake: state.fake};
         case FOLLOW:
             return {
                 ...state,
@@ -55,7 +59,7 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state, totalUsersCount: action.totalCount
             }
-        case TOGGLE_ISFETCHING:
+        case TOGGLE_IS_FETCHING:
             return {
                 ...state, isFetching: action.isFetching
             }
@@ -69,6 +73,9 @@ const usersReducer = (state = initialState, action) => {
         default:
             return state;
     }
+}
+export const setFake = () => {
+    return { type: FAKE};
 }
 export const setFollow = (userId) => {
     return { type: FOLLOW, userId };
@@ -91,7 +98,7 @@ export const setTotalUsersCount = (count) => {
 }
 
 export const setIsFetching = (isFetching) => {
-    return { type: TOGGLE_ISFETCHING, isFetching };
+    return { type: TOGGLE_IS_FETCHING, isFetching };
 }
 
 export const setIsFollowingInProgress = (isFetching, userId) => {
@@ -147,7 +154,5 @@ export const followThunk = (userId) => {
         });
     }
 };
-
-
 
 export default usersReducer;
