@@ -12,7 +12,7 @@ class UsersAPI extends React.Component {
     }
 
     onPageChanged = (numberPage) => {
-        this.props.getUsers2(numberPage, this.props.pageSize);
+        this.props.getUsers(numberPage, this.props.pageSize);
     };
 
     render() {
@@ -37,8 +37,7 @@ class UsersAPI extends React.Component {
 let mapDispatchToProps = {
     unfollow: unfollowThunk,
     follow: followThunk,
-    getUsers: getUsersThunk,
-    getUsers2: getUsersThunk2
+    getUsers: getUsersThunk
 };
 let mapStateToProps = (state) => {
     return {

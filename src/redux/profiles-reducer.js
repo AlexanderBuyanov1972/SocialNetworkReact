@@ -2,6 +2,7 @@ import { getUserById, statusUser } from '../api/api';
 const ADD_POST = 'ADD_POST';
 const SET_PROFILE = 'SET_PROFILE';
 const SET_STATUS_USER = 'SET_STATUS_USER';
+const DELETE_POST = 'DELETE_POST';
 
 let initialState = {
     posts: [
@@ -16,79 +17,54 @@ let initialState = {
 };
 
 const profilesReducer = (state = initialState, action) => {
-    if (action.type === ADD_POST) {
-        let newPost = {
-            countLikes: '0', message: action.newPostText, id: '6',
-            http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
-        };
-        if (newPost.message !== '') {
+    let newPost = {
+        countLikes: '0', message: action.newPostText, id: '6',
+        http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
+    };
+    switch (action.type) {
+        case ADD_POST:
+            if (newPost.message !== '')
+                return {
+                    ...state,
+                    posts: [...state.posts, newPost]
+                };
+        case SET_PROFILE:
             return {
                 ...state,
-                posts: [...state.posts, newPost]
+                profile: action.profile
             };
-        }
-    }else if (action.type === SET_PROFILE) {
-        return {
-            ...state,
-            profile: action.profile
-        };
-    }
-    else if (action.type === SET_STATUS_USER) {
-        return {
-            ...state,
-            status: action.status
-        };
-    }
-    return state;
-}
-export const createAddPostAction = (newPostText) => {
-    return { type: ADD_POST, newPostText };
-}
-
-const setProfile = (profile) => {
-    return {
-        type: SET_PROFILE,
-        profile
-    };
-}
-
-const setStatusUser = (status) => {
-    return {
-        type: SET_STATUS_USER,
-        status
-    };
-}
-
-
-export const getUserThunk = (userId) => {
-    return (dispatch) => {
-        getUserById(userId).then(
-            data => {
-                dispatch(setProfile(data));
-            }
-        );
-    }
-};
-
-export const getStatusUserThunk = (userId) => {
-    return (dispatch) => {
-        statusUser.getStatusUser(userId).then(
-            data => {
-                dispatch(setStatusUser(data));
-            }
-        );
+        case SET_STATUS_USER:
+            return {
+                ...state,
+                status: action.status
+            };
+        case DELETE_POST:
+            return {
+                ...state, posts: state.posts.filter(p => p.id !== action.postId)
+            };
+        default:
+            return state;
     }
 }
 
-export const updateStatusUserThunk = (status) => {
-    return (dispatch) => {
-        statusUser.updateStatusUser(status).then(
-            data => {
-                if (data.resultCode === 0) {
-                    dispatch(setStatusUser(status));
-                }
-            }
-        );
-    }
+export const createAddPostAction = (newPostText) => { return { type: ADD_POST, newPostText } }
+export const createDeletePostAction = (postId) => { return { type: DELETE_POST, postId } }
+export const setProfile = (profile) => { return { type: SET_PROFILE, profile } }
+export const setStatusUser = (status) => { return { type: SET_STATUS_USER, status } }
+
+export const getUserThunk = (userId) => async (dispatch) => {
+    let data = await getUserById(userId);
+    dispatch(setProfile(data))
 }
+
+export const getStatusUserThunk = (userId) => async (dispatch) => {
+    let data = await statusUser.getStatusUser(userId);
+    dispatch(setStatusUser(data))
+}
+
+export const updateStatusUserThunk = (status) => async (dispatch) => {
+    let data = await statusUser.updateStatusUser(status);
+    if (data.resultCode === 0) { dispatch(setStatusUser(status)) }
+}
+
 export default profilesReducer;

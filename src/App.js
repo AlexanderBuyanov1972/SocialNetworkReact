@@ -7,13 +7,13 @@ import News from './components/content/news/News';
 import UsersContainer from './components/content/users/UsersContainer';
 import Musics from './components/content/musics/Musics';
 import Settings from './components/content/settings/Settings';
-import { Route, BrowserRouter, withRouter } from 'react-router-dom';
 import HeaderContainer from './components/header/HeaderContainer';
 import Login from './components/content/login/Login';
 import { initializeApp } from './redux/app-reducer';
-import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Preloader from './components/preloader/Preloader';
+import { connect} from 'react-redux';
+import { Route, withRouter } from 'react-router-dom';
 
 class App extends React.Component {
     componentDidMount() {
@@ -47,4 +47,7 @@ let mapStateToProps = (state) => ({
 
 let mapDispatchToProps = { initializeApp };
 
-export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(App);
+export default compose(
+    withRouter,
+    connect(mapStateToProps, mapDispatchToProps))
+    (App);

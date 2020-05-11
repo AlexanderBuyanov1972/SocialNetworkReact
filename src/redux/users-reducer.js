@@ -1,5 +1,6 @@
 import { getUsers } from '../api/api';
 import { frendsAPI } from '../api/api';
+import { updateObjectInArray } from '../utils/helper/object-helpers';
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -8,9 +9,6 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 const TOGGLE_IS_FETCHING = 'TOGGLE_ISFETCHING';
 const TOGGLE_IS_FOLLOW_INPROGRESS = 'TOGGLE_IS_FOLLOW_INPROGRESS';
-const FAKE = 'FAKE';
-
-
 
 let initialState = {
     users: [],
@@ -18,34 +16,20 @@ let initialState = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: false,
-    isFollowingInProgress: [],
-    fake: 10
-
+    isFollowingInProgress: []
 };
 
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case FAKE:
-            return { ...state, fake: state.fake};
         case FOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: true }
-                    }
-                    return u;
-                })
+                users: updateObjectInArray(state.users, action.userId, "id", { followed: true })
             };
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(u => {
-                    if (u.id === action.userId) {
-                        return { ...u, followed: false }
-                    }
-                    return u;
-                })
+                users: updateObjectInArray(state.users, action.userId, "id", { followed: false })
             };
         case SET_USERS:
             return {
@@ -73,9 +57,6 @@ const usersReducer = (state = initialState, action) => {
         default:
             return state;
     }
-}
-export const setFake = () => {
-    return { type: FAKE};
 }
 export const setFollow = (userId) => {
     return { type: FOLLOW, userId };
@@ -105,54 +86,30 @@ export const setIsFollowingInProgress = (isFetching, userId) => {
     return { type: TOGGLE_IS_FOLLOW_INPROGRESS, isFetching, userId };
 }
 
-export const getUsersThunk = (numberPage, pageSize) => {
-    return (dispatch) => {
-        dispatch(setIsFetching(true));
-        getUsers(numberPage, pageSize).then(
-            data => {
-                dispatch(setIsFetching(false));
-                dispatch(setUsers(data.items));
-                dispatch(setTotalUsersCount(data.totalCount));
-            }
-        );
-    };
-};
+export const getUsersThunk = (numberPage, pageSize) => async (dispatch) => {
+    dispatch(setIsFetching(true));
+    let data = await getUsers(numberPage, pageSize);
+    dispatch(setIsFetching(false));
+    dispatch(setUsers(data.items));
+    dispatch(setTotalUsersCount(data.totalCount));
+}
 
-export const getUsersThunk2 = (numberPage, pageSize) => {
-    return (dispatch) => {
-        dispatch(setCurrentPage(numberPage));
-        dispatch(setIsFetching(true));
-        getUsers(numberPage, pageSize).then(
-            data => {
-                dispatch(setIsFetching(false));
-                dispatch(setUsers(data.items));
-            }
-        );
-    };
-};
-
-export const unfollowThunk = (userId) => {
-    return (dispatch) => {
-        dispatch(setIsFollowingInProgress(true, userId));
-        frendsAPI.unsubscribeUser(userId).then(resultCode => {
-            if (resultCode === 0) {
-                dispatch(setUnfollow(userId));
-            }
-            dispatch(setIsFollowingInProgress(false, userId));
-        });
+// --------------------------------------------------------------------------------
+const followUnfollowFlow = async (dispatch, userId, methodApi, methodCA) => {
+    dispatch(setIsFollowingInProgress(true, userId));
+    let resultCode = await methodApi(userId);
+    if (resultCode === 0) {
+        dispatch(methodCA(userId));
     }
+    dispatch(setIsFollowingInProgress(false, userId));
 };
 
-export const followThunk = (userId) => {
-    return (dispatch) => {
-        dispatch(setIsFollowingInProgress(true, userId));
-        frendsAPI.subscribeUser(userId).then(resultCode => {
-            if (resultCode === 0) {
-                dispatch(setFollow(userId));
-            }
-            dispatch(setIsFollowingInProgress(false, userId));
-        });
-    }
+export const unfollowThunk = (userId) => async (dispatch) => {
+    followUnfollowFlow(dispatch, userId, frendsAPI.unsubscribeUser, setUnfollow);
 };
 
+export const followThunk = (userId) => async (dispatch) => {
+    followUnfollowFlow(dispatch, userId, frendsAPI.subscribeUser, setFollow);
+};
+// --------------------------------------------------------------------------------
 export default usersReducer;

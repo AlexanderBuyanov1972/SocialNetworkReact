@@ -1,11 +1,12 @@
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import React from 'react';
-import store from './redux/redux-store';
 import App from './App';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { connect, Provider } from 'react-redux';
+import { Route, BrowserRouter, withRouter } from 'react-router-dom';
+import store from './redux/redux-store';
+
 
 // setInterval(() => { store.dispatch({ type: "FAKE" }) }, 3000);
 
@@ -14,7 +15,8 @@ ReactDOM.render(
         <Provider store={store}>
             <App />
         </Provider>
-    </BrowserRouter>
+    </BrowserRouter >
+
     , document.getElementById('root'));
 
 

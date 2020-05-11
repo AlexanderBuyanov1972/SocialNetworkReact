@@ -28,45 +28,30 @@ export const setAuthUserData = (data, isAuth) => {
     return { type: SET_USER_DATA, payload: { data, isAuth } };
 }
 
-export const authUserThunk = () => (dispatch) => {
-    return authApi.me().then(
-        d => {
-            if (d.resultCode === 0) {
-                dispatch(setAuthUserData(d.data, true));
-            }
-        }
-    );
-};
-
+export const authUserThunk = () => async (dispatch) => {
+    let d = await authApi.me();
+    if (d.resultCode === 0) { dispatch(setAuthUserData(d.data, true)); }
+}
 
 // const data = {email, password, rememderMe = false};
 
-export const loginUserThunk = (data) => {
-    return (dispatch) => {
-        authApi.login(data).then(
-            d => {
-                if (d.resultCode === 0) {
-                    dispatch(authUserThunk());
-                } else {
-                    let message = d.messages.length > 0 ? d.messages[0] : "Some Error"
-                    let action = stopSubmit("login", { _error: message });
-                    dispatch(action);
-                }
-            }
-        );
-    };
+export const loginUserThunk = (data) => async (dispatch) => {
+    let d = await authApi.login(data);
+    if (d.resultCode === 0) {
+        dispatch(authUserThunk());
+    } else {
+        let message = d.messages.length > 0 ? d.messages[0] : "Some Error"
+        let action = stopSubmit("login", { _error: message });
+        dispatch(action);
+    }
+};
+
+export const logoutUserThunk = () => async (dispatch) => {
+    let d = await authApi.logout();
+    if (d.resultCode === 0) {
+        dispatch(setAuthUserData(d.data, false));
+    }
 }
 
-export const logoutUserThunk = () => {
-    return (dispatch) => {
-        authApi.logout().then(
-            d => {
-                if (d.resultCode === 0) {
-                    dispatch(setAuthUserData(d.data, false));
-                }
-            }
-        );
-    };
-}
 
 export default authReducer;

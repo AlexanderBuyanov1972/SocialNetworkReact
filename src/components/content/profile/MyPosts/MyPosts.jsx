@@ -12,7 +12,7 @@ const maxLength = maxLengthCreator(max);
 const minLength = minLengthCreator(min);
 
 const MyPosts = (props) => {
-  let postsElements = props.profilesPage.posts.map(p => <Post countLikes={p.countLikes} message={p.message} http={p.http} />);
+  let postsElements = props.profilesPage.posts.map(p => <Post key={p.id} countLikes={p.countLikes} message={p.message} http={p.http} />);
 
   const addMyPost = (formData) => {
     props.addNewPost(formData.newPostText);

@@ -33,16 +33,14 @@ let store = {
         sidebar: {}
 
     },
-    getState() {
-        return this._state;
-    },
+    getState() { return this._state; },
     dispatch(action) {
         this._state.profilesPage = profilesReducer(this._state.profilesPage, action);
         this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
         // this._state.sidebar = sidebarReducer(this._state.sidebar, action);
         this._callBack(this._state);
     },
- 
+
     subscribe(observer) {
         this._callBack = observer;
     },
