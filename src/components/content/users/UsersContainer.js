@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { followThunk, unfollowThunk, getUsersThunk, getUsersThunk2 } from '../../../redux/users-reducer';
+import { followThunk, unfollowThunk, getUsersThunk } from '../../../redux/users-reducer';
 import Users from './Users';
 import Preloader from '../../preloader/Preloader';
 import { usersBlock, getUsersSelectors } from '../../../redux/users-selectors';

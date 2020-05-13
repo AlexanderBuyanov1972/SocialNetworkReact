@@ -92,6 +92,7 @@ export const getUsersThunk = (numberPage, pageSize) => async (dispatch) => {
     dispatch(setIsFetching(false));
     dispatch(setUsers(data.items));
     dispatch(setTotalUsersCount(data.totalCount));
+    dispatch(setCurrentPage(numberPage));
 }
 
 // --------------------------------------------------------------------------------

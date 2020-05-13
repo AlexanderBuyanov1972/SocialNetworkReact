@@ -13,12 +13,11 @@ const min = 2;
 const maxLength = maxLengthCreator(max);
 const minLength = minLengthCreator(min);
 
-const Login = (props) => {
-    debugger;
+const Login = ({loginUser,isAuth}) => {
     const onSubmit = (formData) => {
-        props.loginUser(formData);
+        loginUser(formData);
     }
-    if (props.isAuth) {
+    if (isAuth) {
         return <Redirect to={'/profile/' + 7450} />
     }
     return (
