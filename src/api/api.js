@@ -1,83 +1,89 @@
 import * as axios from 'axios';
-import { setProfile } from '../redux/profiles-reducer';
+
+const BASE_URL = 'https://social-network.samuraijs.com/api/1.0/';
+const API_KEY = "173f41e8-aa06-428c-aef6-e95c8d5f1b62";
+const Profile_Status = 'profile/status/';
+const AUTH_ME = 'auth/me';
+const AUTH_LOGIN = 'auth/login';
+const FOLLOW = 'follow/';
+const PROFILE = 'profile/';
+const COUNT = 'count';
+const USERS = 'users';
+const PAGE = 'page';
 
 const instance = axios.create(
     {
         withCredentials: true,
-        baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+        baseURL: BASE_URL,
         headers: {
-            "API-KEY": "173f41e8-aa06-428c-aef6-e95c8d5f1b62"
+            "API-KEY": API_KEY
         }
     }
 );
+// ----------------------object statusUser--------------------------------------------
 export const statusUser = {
     getStatusUser(userId) {
-        return instance.get(`profile/status/${userId}`).then(
+        return instance.get(`${Profile_Status}${userId}`).then(
             response => {
                 return response.data
             });
     },
     updateStatusUser(status) {
-        return instance.put(`profile/status/`, { status }).then(
+        return instance.put(`${Profile_Status}`, { status }).then(
             response => {
                 return response.data
             });
     }
 };
-
+// ----------------------object authApi--------------------------------------------
 export const authApi = {
     me() {
-        return instance.get('auth/me').then(
+        return instance.get(AUTH_ME).then(
             response => {
                 return response.data;
             }
         );
     },
     login(data) {
-        return instance.post('auth/login', data).then(
+        return instance.post(AUTH_LOGIN, data).then(
             response => {
                 return response.data;
             }
         );
     },
     logout() {
-        return instance.delete('auth/login').then(
+        return instance.delete(AUTH_LOGIN).then(
             response => {
                 return response.data;
             }
         );
     }
 };
-
+// -------------------object frendsAPI----------------------------------------------
 export const frendsAPI = {
     unsubscribeUser(id) {
-        return instance.delete(`follow/${id}`).then(response => {
+        return instance.delete(`${FOLLOW}${id}`).then(response => {
             return response.data.resultCode
         });
     },
 
     subscribeUser(id) {
-        return instance.post(`follow/${id}`).then(response => {
+        return instance.post(`${FOLLOW}${id}`).then(response => {
             return response.data.resultCode
         });
     }
 };
-
-
-
-
+// -------------------------separate functions-----------------------------------------
 export const getUserById = (userId) => {
-    return instance.get(`profile/${userId}`).then(
+    return instance.get(`${PROFILE}${userId}`).then(
         response => {
             return response.data
         });
 }
 
-
-export const getUsers= (numberPage = 1, pageSize = 10) => {
-    return instance.get(`users?page=${numberPage}&count=${pageSize}`).then(
+export const getUsers = (numberPage = 1, pageSize = 10) => {
+    return instance.get(`${USERS}?${PAGE}=${numberPage}&${COUNT}=${pageSize}`).then(
         response => {
             return response.data
         });
 };
-
