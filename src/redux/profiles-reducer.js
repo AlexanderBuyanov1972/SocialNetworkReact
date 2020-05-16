@@ -1,4 +1,4 @@
-import { getUserById, statusUser, photoProfile } from '../api/api';
+import { getUserById, statusUser, photoProfile, userProfile } from '../api/api';
 const ADD_POST = 'ADD_POST';
 const SET_PROFILE = 'SET_PROFILE';
 const SET_STATUS_USER = 'SET_STATUS_USER';
@@ -45,7 +45,7 @@ const profilesReducer = (state = initialState, action) => {
             };
         case SAVE_PHOTO_PROFILE:
             return {
-                ...state, profile: {...state.profile, photos: action.photos}
+                ...state, profile: { ...state.profile, photos: action.photos }
             }
         default:
             return state;
@@ -75,6 +75,15 @@ export const updateStatusUserThunk = (status) => async (dispatch) => {
 export const savePhotoProfileThunk = (file) => async (dispatch) => {
     let response = await photoProfile.savePhotoProfile(file);
     if (response.data.resultCode === 0) { dispatch(setPhotoProfile(response.data.data.photos)) }
+}
+
+export const saveProfileThunk = (profile) => async (dispatch, getState) => {
+
+    let response = await userProfile.saveProfile(profile);
+    const userId = getState().auth.data.id;
+    if (response.data.resultCode === 0) {
+        dispatch(getUserThunk(userId));
+    }
 }
 
 export default profilesReducer;

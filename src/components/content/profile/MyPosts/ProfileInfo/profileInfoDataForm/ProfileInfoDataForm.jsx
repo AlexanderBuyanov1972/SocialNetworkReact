@@ -3,24 +3,21 @@ import Contact from '../contact/Contact';
 import { createField, Input, Textarea } from '../../../../../../utils/formsControls/FormsControls'
 import { reduxForm } from "redux-form";
 
-const ProfileInfoDataForm = ({ profile, isOwner, deactivateEditMode }) => {
-
+const ProfileInfoDataForm = ({ profile, handleSubmit }) => {
     return (
-        <form>
-            {isOwner && <div>
-                <button onClick={deactivateEditMode}>Save Profile</button>
-            </div>}
+        <form onSubmit={handleSubmit}>
+            <div><button>Save Profile</button></div>
             <div>
                 <b>Full name</b>:
                  {createField(Input, 'fullName', 'full name', [], null, '')}
             </div>
             <div>
                 <b>Looking for a job</b>:
-                {createField('input', 'lookingFrAJob', '', [], { type: "checkbox" }, '')}
+                {createField('input', 'lookingForAJob', '', [], { type: "checkbox" }, '')}
             </div>
             <div>
                 <b>My professionals skills</b>:
-                {createField(Textarea, 'lookingForAJobDescription', "My professionals skills", [], null, '')}
+                {createField(Textarea, 'lookingForAJobDescription', 'My professionals skills', [], {}, '')}
             </div>
             <div>
                 <b>Abuot me</b>:
@@ -31,7 +28,7 @@ const ProfileInfoDataForm = ({ profile, isOwner, deactivateEditMode }) => {
                     return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
                 })}
             </div>
-        </form>
+        </form >
     );
 }
 

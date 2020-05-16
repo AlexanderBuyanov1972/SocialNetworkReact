@@ -3,7 +3,7 @@ import ProfileInfo from './MyPosts/ProfileInfo/ProfileInfo';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
 import styles from './Profile.module.css';
 
-const Profile = ({ profile, status, updateStatusUser, isOwner, savePhotoProfile}) => {
+const Profile = ({ profile, status, updateStatusUser, isOwner, savePhotoProfile, saveProfile}) => {
 
   return (
     <div className={styles.profile}>
@@ -12,7 +12,8 @@ const Profile = ({ profile, status, updateStatusUser, isOwner, savePhotoProfile}
         status={status}
         updateStatusUser={updateStatusUser}
         isOwner = {isOwner} 
-        savePhotoProfile={savePhotoProfile}/>
+        savePhotoProfile={savePhotoProfile}
+        saveProfile={saveProfile}/>
       <MyPostsContainer />
     </div>
   );

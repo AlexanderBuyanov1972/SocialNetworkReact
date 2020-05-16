@@ -14,12 +14,12 @@ const ProfileInfoData = ({ profile, isOwner, activateEditMode }) => {
                 <b>Looking for a job</b>: {profile.lookingForAJob ? "yes" : "no"}
             </div>
             {
-                profile.lookingForAJob && <div>
+                <div>
                     <b>My professionals skills</b>: {profile.lookingForAJobDescription}
                 </div>
             }
             <div>
-                <b>Abuot me</b>: {profile.lookingForAJob}
+                <b>Abuot me</b>: {profile.aboutMe}
             </div>
             <div>
                 <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {

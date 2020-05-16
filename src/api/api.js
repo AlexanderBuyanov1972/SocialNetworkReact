@@ -86,6 +86,12 @@ export const photoProfile = {
         });
     }
 };
+// -------------------------user profile ----------------------------------------------
+export const userProfile = {
+    saveProfile(profile) {
+        return instance.put(`${PROFILE}`, profile);
+    }
+};
 // -------------------------separate functions-----------------------------------------
 export const getUserById = (userId) => {
     return instance.get(`${PROFILE}${userId}`).then(

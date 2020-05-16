@@ -5,7 +5,7 @@ const SET_USER_DATA = 'SET_USER_DATA';
 
 let initialState = {
     data: {
-        userId: null,
+        id: null,
         login: null,
         email: null
     },
@@ -13,7 +13,7 @@ let initialState = {
 };
 
 const authReducer = (state = initialState, action) => {
-    switch (action.type) {
+        switch (action.type) {
         case SET_USER_DATA:
             return {
                 ...state,
