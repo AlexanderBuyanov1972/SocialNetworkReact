@@ -10,6 +10,7 @@ const PROFILE = 'profile/';
 const COUNT = 'count';
 const USERS = 'users';
 const PAGE = 'page';
+const PHOTO = 'photo';
 
 const instance = axios.create(
     {
@@ -70,6 +71,18 @@ export const frendsAPI = {
     subscribeUser(id) {
         return instance.post(`${FOLLOW}${id}`).then(response => {
             return response.data.resultCode
+        });
+    }
+};
+// -------------------------photo profile ---------------------------------------------
+export const photoProfile = {
+    savePhotoProfile(file) {
+        const formData = new FormData();
+        formData.append('image', file);
+        return instance.put(`${PROFILE}${PHOTO}`, formData, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
         });
     }
 };

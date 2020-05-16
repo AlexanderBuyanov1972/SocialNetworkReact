@@ -1,8 +1,9 @@
-import { getUserById, statusUser } from '../api/api';
+import { getUserById, statusUser, photoProfile } from '../api/api';
 const ADD_POST = 'ADD_POST';
 const SET_PROFILE = 'SET_PROFILE';
 const SET_STATUS_USER = 'SET_STATUS_USER';
 const DELETE_POST = 'DELETE_POST';
+const SAVE_PHOTO_PROFILE = 'SAVE_PHOTO_PROFILE';
 
 let initialState = {
     posts: [
@@ -42,6 +43,10 @@ const profilesReducer = (state = initialState, action) => {
             return {
                 ...state, posts: state.posts.filter(p => p.id !== action.postId)
             };
+        case SAVE_PHOTO_PROFILE:
+            return {
+                ...state, profile: {...state.profile, photos: action.photos}
+            }
         default:
             return state;
     }
@@ -51,6 +56,7 @@ export const createAddPostAction = (newPostText) => { return { type: ADD_POST, n
 export const createDeletePostAction = (postId) => { return { type: DELETE_POST, postId } }
 export const setProfile = (profile) => { return { type: SET_PROFILE, profile } }
 export const setStatusUser = (status) => { return { type: SET_STATUS_USER, status } }
+export const setPhotoProfile = (photos) => { return { type: SAVE_PHOTO_PROFILE, photos } }
 
 export const getUserThunk = (userId) => async (dispatch) => {
     let data = await getUserById(userId);
@@ -65,6 +71,10 @@ export const getStatusUserThunk = (userId) => async (dispatch) => {
 export const updateStatusUserThunk = (status) => async (dispatch) => {
     let data = await statusUser.updateStatusUser(status);
     if (data.resultCode === 0) { dispatch(setStatusUser(status)) }
+}
+export const savePhotoProfileThunk = (file) => async (dispatch) => {
+    let response = await photoProfile.savePhotoProfile(file);
+    if (response.data.resultCode === 0) { dispatch(setPhotoProfile(response.data.data.photos)) }
 }
 
 export default profilesReducer;

@@ -1,6 +1,6 @@
 import React from 'react';
 import Profile from './Profile';
-import { getUserThunk, getStatusUserThunk, updateStatusUserThunk } from '../../../redux/profiles-reducer';
+import { getUserThunk, getStatusUserThunk, updateStatusUserThunk, savePhotoProfileThunk } from '../../../redux/profiles-reducer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { withAuthRedirect } from '../../../hoc/withAuthRedirect';
@@ -18,7 +18,6 @@ class ProfileContainer extends React.Component {
     }
     this.props.getUser(userId);
     this.props.getStatusUser(userId);
-
   }
 
   render() {
@@ -26,7 +25,8 @@ class ProfileContainer extends React.Component {
       <Profile {...this.props}
         profile={this.props.profile}
         status={this.props.status}
-        updateStatusUser={this.props.updateStatusUser} />
+        updateStatusUser={this.props.updateStatusUser}
+        isOwner={this.props.match.params.userId === '7450'} />
     );
   }
 }
@@ -44,7 +44,8 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = {
   getUser: getUserThunk,
   getStatusUser: getStatusUserThunk,
-  updateStatusUser: updateStatusUserThunk
+  updateStatusUser: updateStatusUserThunk,
+  savePhotoProfile: savePhotoProfileThunk
 };
 
 export default compose(
