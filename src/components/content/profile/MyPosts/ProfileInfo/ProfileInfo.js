@@ -32,10 +32,12 @@ const ProfileInfo = ({ profile, isOwner, status, updateStatusUser, savePhotoProf
                     {isOwner && <input type={"file"} onChange={onPhotoSelect} />}
                 </div>
             </div>
-            {editMode ? <ProfileInfoDataFormRedux initialValues={profile} onSubmit={onSubmit} />
+            {editMode ? <ProfileInfoDataFormRedux initialValues={profile} onSubmit={onSubmit} profile={profile} />
                 : <ProfileInfoData profile={profile} isOwner={isOwner}
                     activateEditMode={activateEditMode} />}
-            <ProfileStatusWithHooks status={status} updateStatusUser={updateStatusUser} />
+            <div>
+                <b>Status</b>: <ProfileStatusWithHooks status={status} updateStatusUser={updateStatusUser} />
+            </div>
         </div>
     );
 }
