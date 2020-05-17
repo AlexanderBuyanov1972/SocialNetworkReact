@@ -9,6 +9,7 @@ const ProfileInfo = ({ profile, isOwner, status, updateStatusUser, savePhotoProf
     const onSubmit = (formData) => {
         saveProfile(formData);
         setEditMode(false);
+        console.log(formData);
     };
     let [editMode, setEditMode] = useState(false);
 
