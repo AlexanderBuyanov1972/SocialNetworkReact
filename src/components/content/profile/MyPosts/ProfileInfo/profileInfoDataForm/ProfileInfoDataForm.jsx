@@ -3,10 +3,15 @@ import { createField, Input, Textarea } from '../../../../../../utils/formsContr
 import { reduxForm } from "redux-form";
 import styles from './ProfileInfoDataForm.module.css';
 
-const ProfileInfoDataForm = ({ profile, handleSubmit }) => {
+const ProfileInfoDataForm = ({ profile, handleSubmit, error }) => {
+    console.log(error);
     return (
         <form onSubmit={handleSubmit}>
             <div><button>Save Profile</button></div>
+            {error &&
+                <div className={styles.formSummaryError}>
+                    {error}
+                </div>}
             <div>
                 <b>Full name</b>:
                  {createField(Input, 'fullName', 'full name', [], null, '')}
@@ -30,10 +35,11 @@ const ProfileInfoDataForm = ({ profile, handleSubmit }) => {
                     </div>
                 })}
             </div>
+
         </form >
     );
 }
 
-const ProfileInfoDataFormRedux = reduxForm({ form: 'profile' })(ProfileInfoDataForm);
+const ProfileInfoDataFormRedux = reduxForm({ form: 'edit-profile' })(ProfileInfoDataForm);
 
 export default ProfileInfoDataFormRedux;

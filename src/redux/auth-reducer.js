@@ -41,8 +41,7 @@ export const loginUserThunk = (data) => async (dispatch) => {
         dispatch(authUserThunk());
     } else {
         let message = d.messages.length > 0 ? d.messages[0] : "Some Error"
-        let action = stopSubmit("login", { _error: message });
-        dispatch(action);
+        stopSubmit("login", { _error: message });
     }
 };
 
