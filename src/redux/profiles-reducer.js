@@ -86,7 +86,9 @@ export const saveProfileThunk = (profile) => async (dispatch, getState) => {
     if (response.data.resultCode === 0) {
         dispatch(getUserThunk(userId));
     } else {
-       dispatch(stopSubmit("edit-profile", { _error: response.data.messages[0] }));
+        const messageError = response.data.messages[0];
+        dispatch(stopSubmit("edit-profile", { _error: messageError }));
+        return Promise.reject(messageError);
     }
 }
 

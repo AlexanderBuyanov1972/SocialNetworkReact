@@ -7,8 +7,10 @@ import ProfileInfoDataFormRedux from './profileInfoDataForm/ProfileInfoDataForm'
 import ProfileInfoData from './profileInfoData/ProfileInfoData';
 const ProfileInfo = ({ profile, isOwner, status, updateStatusUser, savePhotoProfile, saveProfile }) => {
     const onSubmit = (formData) => {
-        saveProfile(formData);
-        // setEditMode(false);
+        saveProfile(formData).then(
+            () => setEditMode(false)
+        );
+
     };
     let [editMode, setEditMode] = useState(false);
 
