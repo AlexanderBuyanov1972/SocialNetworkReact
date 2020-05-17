@@ -2,6 +2,7 @@ import * as axios from 'axios';
 
 const BASE_URL = 'https://social-network.samuraijs.com/api/1.0/';
 const API_KEY = "173f41e8-aa06-428c-aef6-e95c8d5f1b62";
+
 const Profile_Status = 'profile/status/';
 const AUTH_ME = 'auth/me';
 const AUTH_LOGIN = 'auth/login';
@@ -11,6 +12,7 @@ const COUNT = 'count';
 const USERS = 'users';
 const PAGE = 'page';
 const PHOTO = 'photo';
+const CAPTCHA = 'security/get-captcha-url';
 
 const instance = axios.create(
     {
@@ -46,18 +48,10 @@ export const authApi = {
         );
     },
     login(data) {
-        return instance.post(AUTH_LOGIN, data).then(
-            response => {
-                return response.data;
-            }
-        );
+        return instance.post(AUTH_LOGIN, data);
     },
     logout() {
-        return instance.delete(AUTH_LOGIN).then(
-            response => {
-                return response.data;
-            }
-        );
+        return instance.delete(AUTH_LOGIN)
     }
 };
 // -------------------object frendsAPI----------------------------------------------
@@ -90,6 +84,12 @@ export const photoProfile = {
 export const userProfile = {
     saveProfile(profile) {
         return instance.put(`${PROFILE}`, profile);
+    }
+};
+// -------------------------captcha url -----------------------------------------------
+export const captchaApi = {
+    getCaptchaUrl() {
+        return instance.get(`${CAPTCHA}`);
     }
 };
 // -------------------------separate functions-----------------------------------------
