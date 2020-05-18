@@ -7,7 +7,7 @@ import Musics from './components/content/musics/Musics';
 import Settings from './components/content/settings/Settings';
 import HeaderContainer from './components/header/HeaderContainer';
 import Login from './components/content/login/Login';
-import { initializeApp } from './redux/app-reducer';
+import { initializeApp } from './redux/app-reducer.ts';
 import { compose } from 'redux';
 import Preloader from './components/preloader/Preloader';
 import { connect } from 'react-redux';
