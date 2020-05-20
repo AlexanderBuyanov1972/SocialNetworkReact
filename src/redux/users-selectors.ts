@@ -1,25 +1,31 @@
+import { UserType } from '../types/types';
 import { createSelector } from "reselect";
-import { UserType } from "../types/types";
+import { AppStateType } from "../redux/redux-store";
 
 export const usersBlock = {
-    getAllUsers(state: any) {
+    getAllUsers(state: AppStateType) {
+        // @ts-ignore
         return state.usersPage.users;
     },
-    getPageSize(state: any) {
+    getPageSize(state: AppStateType) {
+        // @ts-ignore
         return state.usersPage.pageSize;
     },
-    getTotalUsersCount(state: any) {
-        return state.usersPage.totalUsersCount;
+    getTotalUsersCount(state: AppStateType) {
+        // @ts-ignore
+        return state.usersPage.totalCount;
     },
-    getСurrentPage(state: any) {
+    getСurrentPage(state: AppStateType) {
+        // @ts-ignore
         return state.usersPage.currentPage;
     },
-    getIsFollowingInProgress(state: any) {
+    getIsFollowingInProgress(state: AppStateType) {
+        // @ts-ignore
         return state.usersPage.isFollowingInProgress;
     }
 };
 
 export const getUsersSelectors = createSelector(usersBlock.getAllUsers, (users) => {
-    return users
+    return users.filter((u: UserType) => true)
 });
 

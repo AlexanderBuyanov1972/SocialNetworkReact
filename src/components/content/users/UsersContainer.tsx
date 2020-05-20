@@ -4,23 +4,48 @@ import { followThunk, unfollowThunk, getUsersThunk } from '../../../redux/users-
 import Users from './Users';
 import Preloader from '../../preloader/Preloader';
 import { usersBlock, getUsersSelectors } from '../../../redux/users-selectors';
+import { UserType } from '../../../types/types';
+import { AppStateType } from '../../../redux/redux-store';
 
-class UsersAPI extends React.Component {
+type MapStatePropsType = {
+    currentPage: number
+    pageSize: number
+    isFetching: boolean
+    totalCount: number
+    users: Array<UserType>
+    isFollowingInProgress: Array<number>
+}
+type MapDispatchPropsType = {
+    follow: any
+    unfollow: any
+    getUsers: any
+}
+type OwnPropsType = {
+    pageTitle: string
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+
+
+class UsersContainer extends React.Component<PropsType> {
 
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        const { currentPage, pageSize } = this.props
+        this.props.getUsers(currentPage, pageSize);
     }
 
-    onPageChanged = (numberPage) => {
-        this.props.getUsers(numberPage, this.props.pageSize);
+    onPageChanged = (numberPage: number) => {
+        const { pageSize } = this.props
+        this.props.getUsers(numberPage, pageSize);
     };
 
     render() {
         return <>
+            <h2>{this.props.pageTitle}</h2>
             {this.props.isFetching ?
                 <Preloader />
                 : <Users
-                    totalUsersCount={this.props.totalUsersCount}
+                    totalCount={this.props.totalCount}
                     pageSize={this.props.pageSize}
                     currentPage={this.props.currentPage}
                     users={this.props.users}
@@ -34,19 +59,20 @@ class UsersAPI extends React.Component {
     }
 };
 
-let mapDispatchToProps = {
+let mapDispatchToProps: MapDispatchPropsType = {
     unfollow: unfollowThunk,
     follow: followThunk,
     getUsers: getUsersThunk
 };
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         users: getUsersSelectors(state),
         pageSize: usersBlock.getPageSize(state),
-        totalUsersCount: usersBlock.getTotalUsersCount(state),
+        totalCount: usersBlock.getTotalUsersCount(state),
         currentPage: usersBlock.getСurrentPage(state),
         isFollowingInProgress: usersBlock.getIsFollowingInProgress(state)
-    }
+    } as MapStatePropsType
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersAPI);
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);

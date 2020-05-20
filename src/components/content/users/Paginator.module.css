@@ -3,16 +3,20 @@
     justify-content: left;
     border: 2px red solid;
     width: 40%;
-    
 }
 
 .currentPage {
     font-weight: bold;
     color: black;
+    border: 2px solid black;
 }
 
 .page {
     padding: 2px;
+}
+
+.simplePage {
+    border: 2px solid green;
 }
 
 .button {

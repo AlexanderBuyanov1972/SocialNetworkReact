@@ -35,7 +35,7 @@ class App extends React.Component {
                 <div className="app-wapper-content" >
                     <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)} />
                     <Route path='/dialogs/' render={withSuspense(DialogsContainer)} />
-                    <Route path='/users' render={() => <UsersContainer />} />
+                    <Route path='/users' render={() => <UsersContainer pageTitle={'Hello World!!!'}/>} />
                     <Route path='/login' render={() => <Login />} />
                     <Route path='/news' component={News} />
                     <Route path='/musics' component={Musics} />
