@@ -100,7 +100,7 @@ export const getUserById = (userId) => {
         });
 }
 
-export const getUsers = (numberPage = 1, pageSize = 10) => {
+export const getUsers = (numberPage = 1 | null | undefined, pageSize = 10) => {
     return instance.get(`${USERS}?${PAGE}=${numberPage}&${COUNT}=${pageSize}`).then(
         response => {
             return response.data

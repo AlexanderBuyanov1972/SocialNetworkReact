@@ -1,5 +1,8 @@
 import { getUserById, statusUser, photoProfile, userProfile } from '../api/api';
 import { stopSubmit } from "redux-form";
+import { ProfileType, PhotoType } from '../types/types';
+
+const EDIT_PROFILE = "edit-profile";
 
 const ADD_POST = 'ADD_POST';
 const SET_PROFILE = 'SET_PROFILE';
@@ -19,7 +22,11 @@ let initialState = {
     status: ''
 };
 
-const profilesReducer = (state = initialState, action) => {
+
+
+type StateType = typeof initialState;
+
+const profilesReducer = (state = initialState, action: any) => {
     let newPost = {
         countLikes: '0', message: action.newPostText, id: '6',
         http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
@@ -53,33 +60,32 @@ const profilesReducer = (state = initialState, action) => {
             return state;
     }
 }
+export const createAddPostAction = (newPostText: string | null) => { return { type: ADD_POST, newPostText } }
+export const createDeletePostAction = (postId: number | null) => { return { type: DELETE_POST, postId } }
+export const setProfile = (profile: ProfileType) => { return { type: SET_PROFILE, profile } }
+export const setStatusUser = (status: string | null) => { return { type: SET_STATUS_USER, status } }
+export const setPhotoProfile = (photos: PhotoType) => { return { type: SAVE_PHOTO_PROFILE, photos } }
 
-export const createAddPostAction = (newPostText) => { return { type: ADD_POST, newPostText } }
-export const createDeletePostAction = (postId) => { return { type: DELETE_POST, postId } }
-export const setProfile = (profile) => { return { type: SET_PROFILE, profile } }
-export const setStatusUser = (status) => { return { type: SET_STATUS_USER, status } }
-export const setPhotoProfile = (photos) => { return { type: SAVE_PHOTO_PROFILE, photos } }
-
-export const getUserThunk = (userId) => async (dispatch) => {
+export const getUserThunk = (userId: string | null) => async (dispatch: any) => {
     let data = await getUserById(userId);
     dispatch(setProfile(data))
 }
 
-export const getStatusUserThunk = (userId) => async (dispatch) => {
+export const getStatusUserThunk = (userId: number | null) => async (dispatch: any) => {
     let data = await statusUser.getStatusUser(userId);
     dispatch(setStatusUser(data))
 }
 
-export const updateStatusUserThunk = (status) => async (dispatch) => {
+export const updateStatusUserThunk = (status: string | null) => async (dispatch: any) => {
     let data = await statusUser.updateStatusUser(status);
     if (data.resultCode === 0) { dispatch(setStatusUser(status)) }
 }
-export const savePhotoProfileThunk = (file) => async (dispatch) => {
+export const savePhotoProfileThunk = (file: any) => async (dispatch: any) => {
     let response = await photoProfile.savePhotoProfile(file);
     if (response.data.resultCode === 0) { dispatch(setPhotoProfile(response.data.data.photos)) }
 }
 
-export const saveProfileThunk = (profile) => async (dispatch, getState) => {
+export const saveProfileThunk = (profile: ProfileType) => async (dispatch: any, getState: any) => {
 
     let response = await userProfile.saveProfile(profile);
     const userId = getState().auth.data.id;
@@ -87,7 +93,7 @@ export const saveProfileThunk = (profile) => async (dispatch, getState) => {
         dispatch(getUserThunk(userId));
     } else {
         const messageError = response.data.messages[0];
-        dispatch(stopSubmit("edit-profile", { _error: messageError }));
+        dispatch(stopSubmit(EDIT_PROFILE, { _error: messageError }));
         return Promise.reject(messageError);
     }
 }
