@@ -11,10 +11,18 @@ class HeaderContainer extends React.Component {
     }
 };
 
+type PropsType = MapStateToPropsType | MapDispatchToProps;
+
+type MapStateToPropsType = {
+    isAuth: boolean
+    login: string
+};
+
 let mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     login: state.auth.data.login
 });
+type MapDispatchToProps = typeof mapDispatchToProps;
 let mapDispatchToProps = {
     authUser: authUserThunk,
     logout: logoutUserThunk

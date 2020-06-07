@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
 import { compose } from 'redux';
 
-let rootReducer = combineReducers({
+const rootReducer = combineReducers({
     profilesPage: profilesReducer,
     dialogsPage: dialogsReducer,
     usersPage: usersReducer,
@@ -19,14 +19,15 @@ let rootReducer = combineReducers({
     sidebar: sidebarReducer
 });
 
-type RootReducerType = typeof rootReducer;
-export type AppStateType = ReturnType<RootReducerType>;
-// @ts-ignore
+// @ts-ignore --- for use adding statements from chrome -----
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
+export type AppStateType = ReturnType<typeof rootReducer>;
+export type AppDispatchType = typeof store.dispatch
+
+type PropertiesTypes<T> = T extends { [key: string]: infer U } ? U : never
+export type InferActionsTypes<T extends { [key: string]: (...arg: any[]) => any }> = ReturnType<PropertiesTypes<T>>
 // let store = createStore(reducers, applyMiddleware(thunkMiddleware));
 // @ts-ignore
-window._store_ = store;
-
 export default store;

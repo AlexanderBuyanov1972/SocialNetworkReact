@@ -1,4 +1,6 @@
-export const required = (value) => {
+export type FieldvalidatorType = (value: string) => string | undefined
+
+export const required: FieldvalidatorType = (value) => {
     if (value) {
         return undefined;
     } else {
@@ -6,7 +8,7 @@ export const required = (value) => {
     }
 };
 
-export const maxLengthCreator = (maxLength) => (value) => {
+export const maxLengthCreator = (maxLength: number): FieldvalidatorType=> (value) => {
     if (value.length <= maxLength) {
         return undefined;
     } else {
@@ -14,7 +16,7 @@ export const maxLengthCreator = (maxLength) => (value) => {
     }
 };
 
-export const minLengthCreator = (minLength) => (value) => {
+export const minLengthCreator = (minLength: number): FieldvalidatorType => (value) => {
     if (value.length >= minLength) {
         return undefined;
     } else {

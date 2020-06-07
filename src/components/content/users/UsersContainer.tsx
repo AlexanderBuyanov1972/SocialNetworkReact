@@ -64,6 +64,7 @@ let mapDispatchToProps: MapDispatchPropsType = {
     follow: followThunk,
     getUsers: getUsersThunk
 };
+
 let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         users: getUsersSelectors(state),
@@ -75,4 +76,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
 }
 
 // @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect<MapStatePropsType,MapDispatchPropsType,OwnPropsType,AppStateType>(
+    mapStateToProps,
+     mapDispatchToProps
+     )(UsersContainer);

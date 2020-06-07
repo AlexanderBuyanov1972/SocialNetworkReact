@@ -19,7 +19,7 @@ export const usersBlock = {
         // @ts-ignore
         return state.usersPage.currentPage;
     },
-    getIsFollowingInProgress(state: AppStateType) {
+    getIsFollowingInProgress(state: AppStateType): number[] {
         // @ts-ignore
         return state.usersPage.isFollowingInProgress;
     }

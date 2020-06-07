@@ -1,28 +1,31 @@
-import React from 'react';
+import React from 'react'
 
-class ProfileStatus extends React.Component {
-    state = {
+type PropsType = { status: string, updateStatusUser: (status: string) => void };
+type StateType = { editMode: boolean, status: string };
+
+class ProfileStatus extends React.Component<PropsType, StateType> {
+    state: StateType = {
         editMode: false,
         status: this.props.status
     }
-    activateEditMode = () => {
+    activateEditMode = (): void => {
         this.setState({
             editMode: true
         });
     }
-    deactivateEditMode = () => {
+    deactivateEditMode = (): void => {
         this.setState({
             editMode: false
         });
         this.props.updateStatusUser(this.state.status);
     }
-    onStatusChange = (e) => {
+    onStatusChange = (e: React. ChangeEvent<HTMLInputElement>) : void=> {
         this.setState(
             { status: e.currentTarget.value }
         );
 
     }
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: PropsType, prevState: StateType) {
         if (this.props.status !== prevProps.status) {
             this.setState(
                 { status: this.props.status }

@@ -14,8 +14,8 @@ const Paginator: React.FC<PropsType> = ({ totalCount, pageSize, onPageChanged, c
 
     let pagesCount = Math.ceil(totalCount / pageSize);
 
-    let [stateButtonPrev, setStateButtonPrev] = useState(0);
-    let [stateButtonNext, setStateButtonNext] = useState(1);
+    let [stateButtonPrev = 0, setStateButtonPrev] = useState();
+    let [stateButtonNext = 1, setStateButtonNext] = useState();
 
     const minusOne = () => {
         if (stateButtonPrev > 0 && stateButtonNext < pagesCount) {

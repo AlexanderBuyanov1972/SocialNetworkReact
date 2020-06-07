@@ -1,5 +1,4 @@
 const SEND_MESSAGE = 'SEND_MESSAGE';
-const SEND_MESSAGE2 = 'SEND_MESSAGE2';
 
 let message = { id: 0, message: '' };
 type MessageType = typeof message;
@@ -7,7 +6,7 @@ type MessageType = typeof message;
 let dialog = { id: 0,name: '' };
 type DialogType = typeof dialog;
 
-type StateType = typeof initialState
+type DialogsStateType = typeof initialState
 let initialState = {
     messages: [
         { id: '1', message: 'Hi' },
@@ -24,10 +23,10 @@ let initialState = {
 
 type ActionType = {
     type: typeof SEND_MESSAGE
-    newMessageBody: string | null
+    newMessageBody: string 
 };
 
-const dialogsReducer = (state: StateType = initialState, action: ActionType) => {
+const dialogsReducer = (state: DialogsStateType = initialState, action: ActionType) => {
     switch (action.type) {
         case SEND_MESSAGE:
             let body = { id: '4', message: action.newMessageBody };
@@ -41,7 +40,7 @@ const dialogsReducer = (state: StateType = initialState, action: ActionType) => 
             return state;
     }
 };
-export const createSendMessageBodyAction = (newMessageBody: string | null) => {
+export const createSendMessageBodyAction = (newMessageBody: string ) => {
     return { type: typeof SEND_MESSAGE, newMessageBody };
 }
 
