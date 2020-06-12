@@ -1,34 +1,27 @@
-const SEND_MESSAGE = 'SEND_MESSAGE';
-
-let message = { id: 0, message: '' };
+import { InferActionsTypes } from './redux-store';
+let message = { id: '', message: '' };
 type MessageType = typeof message;
 
-let dialog = { id: 0,name: '' };
+let dialog = { id: '', name: '' };
 type DialogType = typeof dialog;
 
 type DialogsStateType = typeof initialState
+const message_1: MessageType = { id: '1', message: 'Hi' }
+const message_2: MessageType = { id: '2', message: 'How are you?' }
+const message_3: MessageType = { id: '3', message: 'HYo!' }
+
+const dialog_1: DialogType = { id: '1', name: 'Dima' }
+const dialog_2: DialogType = { id: '2', name: 'Sveta' }
+const dialog_3: DialogType = { id: '3', name: 'Andrey' }
+const dialog_4: DialogType = { id: '4', name: 'Sasha' }
 let initialState = {
-    messages: [
-        { id: '1', message: 'Hi' },
-        { id: '2', message: 'How are you?' },
-        { id: '3', message: 'Yo!' }
-    ],
-    dialogs: [
-        { id: '1', name: 'Dima' },
-        { id: '2', name: 'Sveta' },
-        { id: '3', name: 'Andrey' },
-        { id: '4', name: 'Sasha' }
-    ]
+    messages: [message_1, message_2, message_3],
+    dialogs: [dialog_1, dialog_2, dialog_3, dialog_4]
 };
 
-type ActionType = {
-    type: typeof SEND_MESSAGE
-    newMessageBody: string 
-};
-
-const dialogsReducer = (state: DialogsStateType = initialState, action: ActionType) => {
+const dialogsReducer = (state: DialogsStateType = initialState, action: ActionsType) => {
     switch (action.type) {
-        case SEND_MESSAGE:
+        case 'SEND_MESSAGE':
             let body = { id: '4', message: action.newMessageBody };
             if (body.message !== '') {
                 return {
@@ -40,8 +33,10 @@ const dialogsReducer = (state: DialogsStateType = initialState, action: ActionTy
             return state;
     }
 };
-export const createSendMessageBodyAction = (newMessageBody: string ) => {
-    return { type: typeof SEND_MESSAGE, newMessageBody };
+export const actionsDialog = {
+    createSendMessageBodyAction: (newMessageBody: string) => ({ type: 'SEND_MESSAGE', newMessageBody } as const)
 }
+
+type ActionsType = InferActionsTypes<typeof actionsDialog>
 
 export default dialogsReducer;

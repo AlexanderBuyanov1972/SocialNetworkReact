@@ -1,17 +1,8 @@
-import { getUserById, statusUser, photoProfile, userProfile } from '../api/api';
-import { stopSubmit } from "redux-form";
-import { ProfileType, PhotoType } from '../types/types';
-import store, { AppDispatchType } from './redux-store';
-import { Action } from 'redux';
-import { ThunkAction } from 'redux-thunk';
-
-const EDIT_PROFILE = "edit-profile";
-
-const ADD_POST = 'ADD_POST';
-const SET_PROFILE = 'SET_PROFILE';
-const SET_STATUS_USER = 'SET_STATUS_USER';
-const DELETE_POST = 'DELETE_POST';
-const SAVE_PHOTO_PROFILE = 'SAVE_PHOTO_PROFILE';
+import { ResultCodesEnum } from '../api/api'
+import { stopSubmit } from "redux-form"
+import { ProfileType, PhotoType } from '../types/types'
+import store, { InferActionsTypes, BaseThunkType } from './redux-store'
+import { userProfile } from '../api/profile-api'
 
 let initialState = {
     posts: [
@@ -21,83 +12,99 @@ let initialState = {
         { countLikes: '4', message: 'post4', id: '4', http: 'https://dt2sdf0db8zob.cloudfront.net/wp-content/uploads/2019/12/9-Best-Online-Avatars-and-How-to-Make-Your-Own-for-Free-image1-5.png' },
         { countLikes: '5', message: 'post5', id: '5', http: 'https://store.playstation.com/store/api/chihiro/00_09_000/container/IL/en/999/EP0149-CUSA09988_00-AV00000000000002/1553528383000/image?w=240&h=240&bg_color=000000&opacity=100&_version=00_09_000' },
     ],
-    profile: {},
+    profile: {} as ProfileType,
     status: ''
 };
 
-type ProfileStateType = typeof initialState;
+export type ProfileStateType = {
+    posts: Array<Post>,
+    profile: ProfileType,
+    status: string
+};
 
-const profilesReducer = (state = initialState, action: any) => {
-    let newPost = {
-        countLikes: '0', message: action.newPostText, id: '6',
-        http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
-    };
+type Post = {
+    countLikes: string
+    message: string
+    id: string
+    http: string
+}
+
+const profilesReducer = (state: ProfileStateType = initialState, action: ActionsTypes) => {
     switch (action.type) {
-        case ADD_POST:
-            if (newPost.message !== '')
-                return {
-                    ...state,
-                    posts: [...state.posts, newPost]
-                };
-        case SET_PROFILE:
+        case 'ADD_POST':
+            let newPost: Post = {
+                countLikes: '0', message: action.newPostText, id: '6',
+                http: 'https://cdn2.iconfinder.com/data/icons/circle-avatars-1/128/050_girl_avatar_profile_woman_suit_student_officer-512.png'
+            };
+            return {
+                ...state,
+                posts: [...state.posts, newPost]
+            };
+        case 'SET_PROFILE':
             return {
                 ...state,
                 profile: action.profile
-            };
-        case SET_STATUS_USER:
+            }
+        case 'SET_STATUS_USER':
             return {
                 ...state,
                 status: action.status
             };
-        case DELETE_POST:
+        case 'DELETE_POST':
             return {
-                ...state, posts: state.posts.filter(p => p.id !== action.postId)
+                ...state,
+                posts: state.posts.filter(p => p.id !== action.postId + '')
             };
-        case SAVE_PHOTO_PROFILE:
+        case 'SAVE_PHOTO_PROFILE':
             return {
-                ...state, profile: { ...state.profile, photos: action.photos }
+                ...state,
+                profile: { ...state.profile, photos: action.photos }
             }
         default:
             return state;
     }
 }
-export const createAddPostAction = (newPostText: string | null) => { return { type: ADD_POST, newPostText } }
-export const createDeletePostAction = (postId: number | null) => { return { type: DELETE_POST, postId } }
-export const setProfile = (profile: ProfileType) => { return { type: SET_PROFILE, profile } }
-export const setStatusUser = (status: string | null) => { return { type: SET_STATUS_USER, status } }
-export const setPhotoProfile = (photos: PhotoType) => { return { type: SAVE_PHOTO_PROFILE, photos } }
+export const actionsProfile = {
+    createAddPostAction: (newPostText: string) => ({ type: 'ADD_POST', newPostText } as const),
+    createDeletePostAction: (postId: string) => ({ type: 'DELETE_POST', postId } as const),
+    setProfile: (profile: ProfileType) => ({ type: 'SET_PROFILE', profile } as const),
+    setStatusUser: (status: string) => ({ type: 'SET_STATUS_USER', status } as const),
+    setPhotoProfile: (photos: PhotoType) => ({ type: 'SAVE_PHOTO_PROFILE', photos } as const)
+}
+type ActionsTypes = InferActionsTypes<typeof actionsProfile>
 
-type ThunkType = ThunkAction<void, ProfileStateType, null, Action<string>>
+// ------------------- thunks ---------------------
+type ThunkType = BaseThunkType<ActionsTypes | ReturnType <typeof stopSubmit>>
 
-export const getUserThunk = (userId: number): ThunkType => async (dispatch: AppDispatchType) => {
-    let response = await getUserById(userId);
-    dispatch(setProfile(response.data as ProfileType))
+export const getUserThunk = (userId: number): ThunkType => async (dispatch) => {
+    let response = await userProfile.getProfile(userId);
+    dispatch(actionsProfile.setProfile(response.data))
 }
 
-export const getStatusUserThunk = (userId: number): ThunkType => async (dispatch: AppDispatchType) => {
-    let response = await statusUser.getStatusUser(userId);
-    dispatch(setStatusUser(response.data.status as string))
+export const getStatusUserThunk = (userId: number): ThunkType => async (dispatch) => {
+    let response = await userProfile.getStatusProfile(userId);
+    dispatch(actionsProfile.setStatusUser(response.data as string))
 }
 
-export const updateStatusUserThunk = (status: string): ThunkType => async (dispatch: AppDispatchType) => {
-    let response = await statusUser.updateStatusUser(status);
-    if (response.data.resultCode === 0) { dispatch(setStatusUser(status)) }
+export const updateStatusUserThunk = (status: string): ThunkType => async (dispatch) => {
+    let response = await userProfile.updateStatusProfile(status);
+    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionsProfile.setStatusUser(status)) }
 }
 
-export const savePhotoProfileThunk = (file: any): ThunkType => async (dispatch: AppDispatchType) => {
-    let response = await photoProfile.savePhotoProfile(file);
-    if (response.data.resultCode === 0) { dispatch(setPhotoProfile(response.data.data.photos as PhotoType)) }
+export const savePhotoProfileThunk = (file: File): ThunkType => async (dispatch) => {
+    let response = await userProfile.savePhotoProfile(file);
+    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionsProfile.setPhotoProfile(response.data.data as PhotoType)) }
 }
 
-export const saveProfileThunk = (profile: ProfileType): ThunkType => async (dispatch: AppDispatchType) => {
-    let response = await userProfile.saveProfile(profile);
-    const userId = store.getState().auth.data.userId as number;
-    if (response.data.resultCode === 0) {
-        dispatch(getUserThunk(userId));
+export const saveProfileThunk = (profile: ProfileType): ThunkType => async (dispatch) => {
+    let response = await userProfile.saveProfile(profile)
+    if (response.data.resultCode === ResultCodesEnum.Success) {
+        let userId = store.getState().auth.data.userId as number
+        getUserThunk(userId)
     } else {
-        const messageError = response.data.messages[0];
-        dispatch(stopSubmit(EDIT_PROFILE, { _error: messageError }));
-        return Promise.reject(messageError);
+        const messageError = response.data.messages[0]
+        dispatch(stopSubmit('EDIT_PROFILE', { _error: messageError }))
+        return Promise.reject(messageError)
     }
 }
-export default profilesReducer;
+export default profilesReducer

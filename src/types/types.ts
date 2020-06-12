@@ -1,22 +1,31 @@
-import { statusUser } from './../api/api';
+import { ResultCodesEnum } from './../api/api';
 
+export type GetItemsType<T> = {
+    items: Array<T>
+    totalCount: number
+    error: string | null
+}
 // ----------- response --------
-export type ResponseType = {
-    data: DataResponseType
-    resultCode: number
+export type ResponseType<D = {}> = {
+    data: D
+    resultCode: ResultCodesEnum
     messages: Array<string>
 };
 
-export type DataResponseType = {
-    userId?: number
-    email?: string
-    login?: string
-    photos?: PhotoType
-    id?: number
+export type MeResponseData = {
+    userId: number
+    email: string
+    login: string
 }
-// ----------- captcha ---------------
-export type ResponseGetCaptchaType = {
+
+export type LoginResponseData = {
+    userId: number
+}
+export type CaptchaResponseData = {
     url: string
+};
+export type StatusType = {
+    status: string
 };
 // ------------- request -------------
 export type RequestLoginType = {
@@ -25,17 +34,13 @@ export type RequestLoginType = {
     rememberMe: boolean
     captcha?: string
 };
-// -------------- status ------------------
 
-export type StatusType = {
-    status: string
-};
 // -------------- profile -----------------
 export type ProfileType = {
-    userId: number | null
-    lookingForAJob: string | null
-    lookingForAJobDescription: string | null
-    fullName: string | null
+    userId: number
+    lookingForAJob: string
+    lookingForAJobDescription: string
+    fullName: string
     contacts: ContactsType
 
 };
@@ -62,9 +67,4 @@ export type PhotoType = {
     small: string | null
     large: string | null
 };
-// ------------users----------------------------
-export type ResponseUsersType = {
-    items: UserType[]
-    totalCount: number
-    error: string
-}
+
