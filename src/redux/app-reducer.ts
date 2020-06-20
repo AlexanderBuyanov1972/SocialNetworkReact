@@ -2,7 +2,7 @@ import { authUserThunk } from './auth-reducer'
 import { AppDispatchType, InferActionsTypes } from './redux-store'
 
 let initialState = { initialized: false }
-type InitialStateType = typeof initialState
+type InitialStateType =  { initialized: boolean }
 
 const appReducer = (state: InitialStateType = initialState,
     action: ActionsTypes): InitialStateType => {

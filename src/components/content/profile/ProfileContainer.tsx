@@ -1,13 +1,17 @@
-import React from 'react';
-import Profile from './Profile';
-import { getUserThunk, getStatusUserThunk, updateStatusUserThunk, savePhotoProfileThunk, saveProfileThunk } from '../../../redux/profiles-reducer';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { withAuthRedirect } from '../../../hoc/withAuthRedirect';
-import { compose } from 'redux';
-const ownerUserId = '7450';
+import { AppStateType } from '../../../redux/redux-store'
+import React from 'react'
+import Profile from './Profile'
+import { getUserThunk, getStatusUserThunk, updateStatusUserThunk, savePhotoProfileThunk, saveProfileThunk } from '../../../redux/profiles-reducer'
+import { connect } from 'react-redux'
+import { withRouter, RouteComponentProps } from 'react-router-dom'
+import { withAuthRedirect } from '../../../hoc/withAuthRedirect'
+import { compose } from 'redux'
 
-class ProfileContainer extends React.Component {
+const ownerUserId = '7450';
+type PathParamType = {userId: string }
+type PropsType = RouteComponentProps<PathParamType> & { someString: string }
+
+class ProfileContainer extends React.Component<AppProfilePropsType & PropsType> {
 
   componentDidMount() {
     let userId = this.props.match.params.userId;
@@ -24,6 +28,7 @@ class ProfileContainer extends React.Component {
   render() {
     return (
       <Profile {...this.props}
+        user={this.props.userIdDefault}
         profile={this.props.profile}
         status={this.props.status}
         updateStatusUser={this.props.updateStatusUser}
@@ -34,7 +39,7 @@ class ProfileContainer extends React.Component {
 }
 
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     profile: state.profilesPage.profile,
     status: state.profilesPage.status,
@@ -42,6 +47,8 @@ let mapStateToProps = (state) => {
     userIdDefault: state.auth.userId
   }
 };
+
+type MapStateToPropsType = ReturnType<typeof mapStateToProps>
 
 let mapDispatchToProps = {
   getUser: getUserThunk,
@@ -51,6 +58,15 @@ let mapDispatchToProps = {
   saveProfile: saveProfileThunk
 };
 
+type MapDispatchToPropsType = {
+  getUser: (id: string) => Promise<void>
+  getStatusUser: (id: string) => Promise<void>
+  updateStatusUser: () => Promise<void>
+  savePhotoProfile: () => Promise<void>
+  saveProfile: () => Promise<void>
+}
+
+type AppProfilePropsType = MapStateToPropsType & MapDispatchToPropsType
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   withAuthRedirect,

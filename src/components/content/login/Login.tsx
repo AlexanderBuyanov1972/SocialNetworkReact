@@ -23,9 +23,7 @@ type LoginPropsType = {
     captchaUrl: string
 }
 
-type OwnPropsType = {
-   captchaUrl: string
-}
+type OwnPropsType = {captchaUrl: string}
 // ---------------------  state and dispatch --------------------------
 type MapStateToPropsType = {
     isAuth: boolean
@@ -38,7 +36,7 @@ type MapDispatchToPropsType = {
 // ----------------------------------------------
 type CreateFieldNamesType = Extract< keyof RequestLoginType, string>
 
-const LoginForm: React.FC<InjectedFormProps<RequestLoginType, OwnPropsType> & OwnPropsType> = (props: LoginPropsType) => {
+const LoginForm: React.FC<InjectedFormProps<RequestLoginType, OwnPropsType,string> & OwnPropsType> = (props: LoginPropsType) => {
     return (
         <form onSubmit={props.handleSubmit}>
             {createField<CreateFieldNamesType>(Input, 'email', "email", [required, minLength, maxLength], {}, '')}

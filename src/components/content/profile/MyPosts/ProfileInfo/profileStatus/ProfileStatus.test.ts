@@ -5,12 +5,12 @@ import ProfileStatus from './ProfileStatus';
 describe("ProfileStatus component", () => {
     test("status from props should be in the state", () => {
         const textStatus = "my name ProfileStatus";
-        const component = create(<ProfileStatus status={textStatus} />);
+        const component = create(<ProfileStatus status={textStatus}/>);
         const instance = component.getInstance();
         expect(instance.state.status).toBe(textStatus);
     });
     test("after creation <span> should be displayed", () => {
-        const component = create(<ProfileStatus />);
+        const component = create(<ProfileStatus />)
         const root = component.root;
         let span = root.findByType("span");
         expect(span).toBeDefined();
@@ -23,8 +23,8 @@ describe("ProfileStatus component", () => {
         expect(span.children[0]).toBe(textStatus);
     });
     test("after creation <input> should be not displayed", () => {
-        const component = create(<ProfileStatus />);
-        const root = component.root;
+        const component = create(<ProfileStatus />)
+        const root = component.root
         expect(() => { let input = root.findByType("input") }).toThrow();
 
     });

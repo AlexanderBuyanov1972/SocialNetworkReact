@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from './News.module.css';
 
-const News = (props) => {
+type PropsType = {}
+
+const News: React.FC<PropsType> = (props: PropsType) => {
     return (
         <div>
         News
          </div>
     );
 }
-
 
 export default News;

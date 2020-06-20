@@ -7,10 +7,12 @@ export type GetItemsType<T> = {
 }
 // ----------- response --------
 export type ResponseType<D = {}> = {
-    data: D
+    data: Data
     resultCode: ResultCodesEnum
     messages: Array<string>
 };
+
+export type Data = {photos? : PhotoType | undefined}
 
 export type MeResponseData = {
     userId: number
@@ -18,15 +20,9 @@ export type MeResponseData = {
     login: string
 }
 
-export type LoginResponseData = {
-    userId: number
-}
-export type CaptchaResponseData = {
-    url: string
-};
-export type StatusType = {
-    status: string
-};
+export type LoginResponseData = { userId: number }
+export type CaptchaResponseData = { url: string };
+export type StatusType = { status: string };
 // ------------- request -------------
 export type RequestLoginType = {
     email: string
@@ -37,34 +33,34 @@ export type RequestLoginType = {
 
 // -------------- profile -----------------
 export type ProfileType = {
-    userId: number
+    aboutMe: string
+    contacts: ContactsType
     lookingForAJob: string
     lookingForAJobDescription: string
     fullName: string
-    contacts: ContactsType
-
+    userId: number
+    photos: PhotoType
+    status: string
 };
 export type ContactsType = {
-    github: string | null
-    vk: string | null
-    facebook: string | null
-    instagram: string | null
-    twitter: string | null
-    website: string | null
-    youtube: string | null
-    mainLink: string | null
-};
-// --------------- user -------------------
-export type UserType = {
-    name: string | null,
-    id: number | null,
-    photos: PhotoType
-    status: string | null,
-    followed: boolean
-
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
 };
 export type PhotoType = {
-    small: string | null
-    large: string | null
+    small: string
+    large: string
 };
+// --------------- user -------------------
+// export type UserType = {
+//     id: number
+//     name: string
+//     followed: boolean
+// };
+
 

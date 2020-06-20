@@ -10,8 +10,8 @@ type PropsType = {
     onPageChanged: (page: number) => void
     
     users: Array<UserType>
-    unfollow: (userId: number) => void
-    follow: (userId: number) => void
+    unfollow: (userId: number| null) => void
+    follow: (userId: number | null) => void
     isFollowingInProgress: Array<number>
 }
 
@@ -24,9 +24,8 @@ let Users: React.FC<PropsType> = ({ totalCount, pageSize, currentPage, onPageCha
                 onPageChanged={onPageChanged}
                 currentPage={currentPage} />
             {
-                users.filter(u => true).map(u =>
-                    <User key={u.id} user={u} unfollow={unfollow} follow={follow}
-                        isFollowingInProgress={isFollowingInProgress} />
+                users.filter(u => true).map((u: UserType )=>
+                    <User key={u.id} user={u} unfollow={unfollow} follow={follow} isFollowingInProgress={isFollowingInProgress} />
                 )
             }
         </div>

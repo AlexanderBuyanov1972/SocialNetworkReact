@@ -5,7 +5,7 @@ type MessageType = typeof message;
 let dialog = { id: '', name: '' };
 type DialogType = typeof dialog;
 
-type DialogsStateType = typeof initialState
+export type DialogsStateType = typeof initialState
 const message_1: MessageType = { id: '1', message: 'Hi' }
 const message_2: MessageType = { id: '2', message: 'How are you?' }
 const message_3: MessageType = { id: '3', message: 'HYo!' }
@@ -16,7 +16,7 @@ const dialog_3: DialogType = { id: '3', name: 'Andrey' }
 const dialog_4: DialogType = { id: '4', name: 'Sasha' }
 let initialState = {
     messages: [message_1, message_2, message_3],
-    dialogs: [dialog_1, dialog_2, dialog_3, dialog_4]
+    dialogs: [dialog_1, dialog_2, dialog_3, dialog_4],
 };
 
 const dialogsReducer = (state: DialogsStateType = initialState, action: ActionsType) => {

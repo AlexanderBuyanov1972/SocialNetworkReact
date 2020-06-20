@@ -93,7 +93,8 @@ export const updateStatusUserThunk = (status: string): ThunkType => async (dispa
 
 export const savePhotoProfileThunk = (file: File): ThunkType => async (dispatch) => {
     let response = await userProfile.savePhotoProfile(file);
-    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionsProfile.setPhotoProfile(response.data.data as PhotoType)) }
+    let photos: PhotoType | undefined = response.data.data.photos
+    if (response.data.resultCode === ResultCodesEnum.Success) { dispatch(actionsProfile.setPhotoProfile(photos as PhotoType)) }
 }
 
 export const saveProfileThunk = (profile: ProfileType): ThunkType => async (dispatch) => {

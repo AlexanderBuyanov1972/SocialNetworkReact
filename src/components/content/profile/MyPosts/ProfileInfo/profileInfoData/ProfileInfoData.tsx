@@ -1,7 +1,14 @@
 import React from "react";
 import Contact from '../contact/Contact'
+import { ProfileType, ContactsType } from "../../../../../../types/types";
 
-const ProfileInfoData = ({ profile, isOwner, activateEditMode }) => {
+type ProfieIsOwnerActivateEditModeType = {
+    profile: ProfileType
+    isOwner: boolean
+    activateEditMode: () => void
+}
+
+const ProfileInfoData: React.FC<ProfieIsOwnerActivateEditModeType> = ({ profile, isOwner, activateEditMode }) => {
     return (
         <div>
             {isOwner && <div>
@@ -22,13 +29,11 @@ const ProfileInfoData = ({ profile, isOwner, activateEditMode }) => {
                 <b>Abuot me</b>: {profile.aboutMe}
             </div>
             <div>
-                <b>Contacts</b>: {Object.keys(profile.contacts).map(key => {
-                    return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key]} />
+                <b>Contacts</b>: {Object.keys(profile.contacts).map((key) => {
+                    return <Contact key={key} contactTitle={key} contactValue={profile.contacts[key as  keyof ContactsType]} />
                 })}
             </div>
         </div>
     );
 }
-
-
 export default ProfileInfoData;

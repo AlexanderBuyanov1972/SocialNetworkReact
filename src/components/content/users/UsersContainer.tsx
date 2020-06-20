@@ -75,8 +75,5 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     } as MapStatePropsType
 }
 
-// @ts-ignore
-export default connect<MapStatePropsType,MapDispatchPropsType,OwnPropsType,AppStateType>(
-    mapStateToProps,
-     mapDispatchToProps
-     )(UsersContainer);
+export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>
+    (mapStateToProps, mapDispatchToProps)(UsersContainer);

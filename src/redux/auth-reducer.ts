@@ -1,18 +1,19 @@
-import { ResultCodesEnum } from "../api/api";
-import { stopSubmit } from "redux-form";
+import { ResultCodesEnum } from "../api/api"
+import { stopSubmit } from "redux-form"
 import { RequestLoginType, MeResponseData } from '../types/types'
-import { InferActionsTypes, BaseThunkType } from "./redux-store";
-import { captchaApi } from "../api/security-api";
-import { authApi } from "../api/auth-api";
+import { InferActionsTypes, BaseThunkType } from "./redux-store"
+import { captchaApi } from "../api/security-api"
+import { authApi } from "../api/auth-api"
 
-const LOGIN = 'login';
-const SOME_ERROR = 'Some Error';
+const LOGIN = 'login'
+const SOME_ERROR = 'Some Error'
 
 let initialState = {
     data: {} as MeResponseData,
     isAuth: false,
     captchaUrl: ''
 };
+
 export type AuthStateType = typeof initialState;
 
 const authReducer = (state: AuthStateType = initialState, action: ActionsType) => {
@@ -74,4 +75,5 @@ export const getCaptchaUrlThunk = (): ThunkType => {
         dispatch(actionsAUTH.setCaptchaUrl(url));
     }
 }
+
 export default authReducer;

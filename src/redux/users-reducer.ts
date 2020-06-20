@@ -1,9 +1,8 @@
 import { ResultCodesEnum } from '../api/api';
 import { updateObjectInArray } from '../utils/helper/object-helpers';
 import { UserType } from '../types/types';
-import { AppStateType, AppDispatchType, InferActionsTypes, BaseThunkType } from './redux-store';
+import { InferActionsTypes, BaseThunkType } from './redux-store';
 import { frendsAPI } from '../api/users-api';
-import { ThunkDispatch } from 'redux-thunk';
 import { Dispatch } from 'redux';
 
 let initialState = {
@@ -70,8 +69,7 @@ type ActionsTypes = InferActionsTypes<typeof actionsUser>
 
 // ----------------- thunks -------------------------
 
-type ThunkType = BaseThunkType<ActionsTypes >
-
+type ThunkType = BaseThunkType<ActionsTypes>
 export const getUsersThunk = (numberPage: number, pageSize: number): ThunkType => {
     return async (dispatch) => {
         dispatch(actionsUser.setIsFetching(true));
@@ -82,7 +80,6 @@ export const getUsersThunk = (numberPage: number, pageSize: number): ThunkType =
         dispatch(actionsUser.setCurrentPage(numberPage));
     }
 }
-
 const _followUnfollowFlow = (dispatch: Dispatch<ActionsTypes>, userId: number,
     methodApi: any, methodCA: (userId: number) => ActionsTypes): ThunkType => {
     return async (dispatch) => {
@@ -95,17 +92,14 @@ const _followUnfollowFlow = (dispatch: Dispatch<ActionsTypes>, userId: number,
     }
 
 };
-
 export const unfollowThunk = (userId: number): ThunkType => {
     return async (dispatch) => {
         _followUnfollowFlow(dispatch, userId, frendsAPI.unsubscribeUser, actionsUser.setUnfollow);
     }
 };
-
 export const followThunk = (userId: number): ThunkType => {
     return async (dispatch) => {
         _followUnfollowFlow(dispatch, userId, frendsAPI.subscribeUser, actionsUser.setFollow);
     }
 };
-
 export default usersReducer;
